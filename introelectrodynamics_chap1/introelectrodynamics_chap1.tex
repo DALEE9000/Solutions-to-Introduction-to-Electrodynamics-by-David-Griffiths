@@ -8,6 +8,8 @@
 \hbadness=10000 % suppress underfull warnings
 
 \usetikzlibrary{arrows.meta, calc, decorations.markings, backgrounds}
+\usepackage{tikz-3dplot}
+\usepackage{float}       
 \usepackage{esint}
 
 \begin{document}
@@ -536,7 +538,7 @@ The unique aspect of this situation is our axis of rotation is equidistant from 
 \newpage
 
 \subsection{\textsf{1.2 - Differential Calculus}}
-\subsubsection{\textsf{1.2.2}}
+\subsubsection{\textsf{1.2.2 - Gradient}}
 % QUESTION 11
 \qs{1.11}{Find the gradients of the following functions:
 \begin{enumerate}[label=(\alph*)]
@@ -731,6 +733,7 @@ Combining our results into the rotation matrix and corresponding matrix equation
 	\end{pmatrix}
 \]
 
+\subsubsection{\textsf{1.2.4 - The Divergence}}
 % QUESTION 15
 \qs{1.15}{Calculate the divergence of the following vector functions:
 \begin{enumerate}[label=(\alph*)]
@@ -807,6 +810,7 @@ Combining our ingredients and invoking the Pythagorean theorem, conclude
 	\implies \frac{\partial \overline{v}_{y}}{\partial \overline{y}} + \frac{\partial \overline{v}_{z}}{\partial \overline{z}} & = \frac{\partial v_{y}}{\partial y} + \frac{\partial v_{z}}{\partial z}
 \end{align*}
 
+\subsubsection{\textsf{1.2.5 - The Curl}}
 % QUESTION 18
 \qs{1.18}{Calculate the curls of the vector functions in Prob. 1.15.}
 
@@ -885,6 +889,7 @@ An easy example is: \( f \!\left( x \right) = -x \), \( g \!\left( y \right) = -
 
 \vspace{12pt}
 
+\subsubsection{\textsf{1.2.6 - Product Rules}}
 % QUESTION 21
 \qs{1.21}{Prove product rules (i), (iv), and (v).}
 
@@ -1029,7 +1034,454 @@ The blue summations cancel each other out, while the red terms sum to the desire
 (vi) \( \nabla \times \!\left( \pmb{A} \times \pmb{B} \right) = \!\left( \pmb{B} \cdot \nabla \right)\pmb{A} - \!\left( \pmb{A} \cdot \nabla \right)\pmb{B} + \pmb{A}\!\left( \nabla \cdot \pmb{B} \right) - \pmb{B}\!\left( \nabla \cdot \pmb{A} \right) \).
 
 \begin{proof}[Proof]
-	
+\begin{align*}
+	\nabla \times \!\left( \pmb{A} \times \pmb{B} \right) & = \begin{vmatrix}
+		\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\[3pt]
+		\frac{\partial }{\partial x} & \frac{\partial }{\partial y} & \frac{\partial }{\partial z} \\[6pt]
+		A_{y}B_{z} - A_{z}B_{y} & A_{z}B_{x} - A_{x}B_{z} & A_{x}B_{y} - A_{y}B_{x}
+	\end{vmatrix} \\
+							      & = \sum_{i \in \!\left\{ x,y,z \right\}}\!\left\{ \sum_{j \in \!\left\{ x,y,z \right\}} \!\left[ \!\left( \textcolor{red}{A_{i}\frac{\partial B_{j}}{\partial j}} + \textcolor{blue}{B_{j}\frac{\partial A_{i}}{\partial j}} \right) - \!\left( \textcolor{blue}{A_{j}\frac{\partial B_{i}}{\partial j}} + \textcolor{red}{B_{i}\frac{\partial A_{j}}{\partial j}} \right) \right]\right\}\pmb{\hat{i}} \\
+		\!\left( \pmb{B} \cdot \nabla \right)\pmb{A} & = \sum_{i \in \!\left\{ x,y,z \right\}} \!\left( \sum_{j \in \!\left\{ x,y,z \right\}} \textcolor{blue}{B_{j}\frac{\partial A_{i}}{\partial j}} \right)\pmb{\hat{i}} \\
+		\!\left( \pmb{A} \cdot \nabla \right)\pmb{B} & = \sum_{i \in \!\left\{ x,y,z \right\}} \!\left( \sum_{j \in \!\left\{ x,y,z \right\}} \textcolor{blue}{A_{j}\frac{\partial B_{i}}{\partial j}} \right)\pmb{\hat{i}} \\
+		\pmb{A}\!\left( \nabla \cdot \pmb{B} \right) & = \sum_{i \in \!\left\{ x,y,z \right\}} \!\left( \sum_{j \in \!\left\{ x,y,z \right\}} \textcolor{red}{A_{i}\frac{\partial B_{j}}{\partial j}} \right)\pmb{\hat{i}} \\
+		\pmb{B}\!\left( \nabla \cdot \pmb{A} \right) & = \sum_{i \in \!\left\{ x,y,z \right\}} \!\left( \sum_{j \in \!\left\{ x,y,z \right\}} \textcolor{red}{B_{i}\frac{\partial A_{j}}{\partial j}} \right)\pmb{\hat{i}}
+\end{align*}
+Where once again, we combine \textcolor{red}{divergence} and \textcolor{blue}{directional derivative} components to produce the desired result.
 \end{proof}
+
+% QUESTION 24
+\qs{1.24}{Derive the three quotient rules.}
+
+Switch either \( g \rightarrow g^{-1} \) or \( f \rightarrow f^{-1} \) to find
+
+\begin{align*}
+	\nabla \!\left( \frac{f}{g} \right) & = \nabla \!\left( fg^{-1} \right) \\
+					    & = f \nabla g^{-1} + g^{-1}\nabla f \\
+					    & = \frac{g \nabla f - f \nabla g}{g^{2}} \\
+	\nabla \cdot \!\left( \frac{1}{f} \pmb{A} \right) & = \nabla \cdot \!\left( f^{-1}\pmb{A} \right) \\
+							  & = f^{-1}\!\left( \nabla \cdot \pmb{A} \right) + \pmb{A} \cdot \!\left( \nabla f^{-1} \right) \\
+							  & = \frac{f \!\left( \nabla \cdot \pmb{A} \right) - \pmb{A} \cdot \nabla f}{f^{2}} \\
+	\nabla \times \!\left( \frac{1}{f}\pmb{A} \right) & = \nabla \times \!\left( f^{-1}\pmb{A} \right) \\
+							  & = f^{-1}\!\left( \nabla \times \pmb{A} \right) - \pmb{A} \times \!\left( \nabla f^{-1} \right) \\
+							  & = \frac{f \!\left( \nabla \times \pmb{A} \right) + \pmb{A} \times \nabla f}{f^{2}}
+\end{align*}
+
+% QUESTION 25
+\qs{1.25}{\begin{enumerate}[label=(\alph*)]
+	\item Check product rule (iv) (by calculating each term separately) for the functions
+	\[
+		\pmb{A} = x \pmb{\hat{x}} + 2y \pmb{\hat{y}} + 3z \pmb{\hat{z}} \qquad \pmb{B}= 3y \pmb{\hat{x}} - 2x \pmb{\hat{y}} 
+	\]
+	\item Do the same for product rule (ii).
+	\item Do the asme for rule (vi).
+\end{enumerate}}
+
+Use the fact that \( \nabla \times A = \pmb{0} \) from our insight in problem 1.20 that a zero curl arises when each component function is strictly in the variable of its corresponding basis coordinate.
+
+\begin{enumerate}[label=(\alph*)]
+	\item \begin{align*}
+		\pmb{A} \times \pmb{B} & = \begin{vmatrix}
+			\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\
+			x & 2y & 3z \\
+			3y & -2x & 0
+		\end{vmatrix} \\
+				       & = 6xz \pmb{\hat{x}} + 9yz \pmb{\hat{y}} - \!\left(2x^{2} + 6y^{2} \right)\pmb{\hat{z}} \\
+	\boxed{\nabla \cdot \!\left( \pmb{A} \times \pmb{B} \right)} & = \frac{\partial }{\partial x}\!\left( 6xz \right) + \frac{\partial }{\partial y}\!\left( 9yz \right) - \frac{\partial }{\partial z}\!\left( 2x^{2} + 6y^{2} \right) \\
+								     & = \boxed{15z} \\
+	\boxed{\pmb{B} \cdot \!\left( \nabla \times \pmb{A} \right)} & = \boxed{0} \\
+					       \nabla \times \pmb{B} & = \begin{vmatrix}
+					       	\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\
+					       	\frac{\partial }{\partial x} & \frac{\partial }{\partial y} & \frac{\partial }{\partial z} \\
+					       	3y & -2x & 0
+					       \end{vmatrix} \\
+								     & = -5 \pmb{\hat{z}} \\
+			\boxed{\pmb{A} \cdot \!\left( \nabla \times \pmb{B} \right)} & = \boxed{-15z} \\
+			\boxed{\pmb{B} \cdot \!\left( \nabla \times \pmb{A} \right) - \pmb{A} \cdot \!\left( \nabla \times \pmb{B} \right)} & = \boxed{15z}
+	\end{align*}
+	\item \begin{align*}
+			\boxed{\nabla \!\left( \pmb{A} \cdot \pmb{B} \right)} & = \frac{\partial }{\partial x}\!\left( -xy \right)\pmb{\hat{x}} + \frac{\partial }{\partial y}\!\left( -xy \right)\pmb{\hat{y}} \\
+									      & = \boxed{-y \pmb{\hat{x}} - x \pmb{\hat{y}}} \\
+							\nabla \times \pmb{B} & = -5 \pmb{\hat{z}} \\
+							\boxed{\pmb{A} \times \!\left( \nabla \times \pmb{B} \right)} & = \begin{vmatrix}
+								\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\
+								x & 2y & 3z \\
+								0 & 0 & -5
+							\end{vmatrix} \\
+														      & = \boxed{-10y \pmb{\hat{x}} + 5x \pmb{\hat{y}}} \\
+								\boxed{\pmb{B} \times \!\left( \nabla \times \pmb{A} \right)} & = \boxed{\pmb{0}} \\
+								\boxed{\!\left( \pmb{A} \cdot \nabla \right)\pmb{B}} & = x \frac{\partial \pmb{B}}{\partial x} + 2y \frac{\partial \pmb{B}}{\partial y} \\
+														     & = \boxed{6y \pmb{\hat{x}} - 2x \pmb{\hat{y}}} \\
+								\boxed{\!\left( \pmb{B} \cdot \nabla \right)\pmb{A}} & = 3y \frac{\partial \pmb{A}}{\partial x} - 2x \frac{\partial \pmb{A}}{\partial y} \\
+														     & = \boxed{3y \pmb{\hat{x}} - 4x \pmb{\hat{y}}}
+\end{align*}
+Summing our terms together, derive
+\[
+	\pmb{A} \times \!\left( \nabla \times \pmb{B} \right) + \pmb{B} \times \!\left( \nabla \times \pmb{A} \right) + \!\left( \pmb{A} \cdot \nabla \right)\pmb{B} + \!\left( \pmb{B} \cdot \nabla \right)\pmb{A} = \boxed{-y \pmb{\hat{x}} - x \pmb{\hat{y}}}
+\]
+	\item \begin{align*}
+		\boxed{\nabla \times \!\left( \pmb{A} \times \pmb{B} \right)} & = \begin{vmatrix}
+			\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\
+			\frac{\partial }{\partial x} & \frac{\partial }{\partial y} & \frac{\partial }{\partial z} \\
+			6xz & 9yz & -\!\left( 2x^{2} + 6y^{2} \right)
+		\end{vmatrix} \\
+									      & = \!\left[ \frac{\partial }{\partial y}\!\left[ -\!\left( 2x^{2} + 6y^{2} \right)\right] - \frac{\partial }{\partial z}\!\left( 9yz \right) \right]\pmb{\hat{x}} \\
+									      & \quad + \!\left[ \frac{\partial }{\partial z}\!\left( 6xz \right) + \frac{\partial }{\partial x}\!\left( 2x^{2} + 6y^{2} \right) \right]\pmb{\hat{y}} \\ 
+									      & \qquad + \!\left[ \frac{\partial }{\partial x}\!\left( 9yz \right) - \frac{\partial }{\partial y}\!\left( 6xz \right) \right]\pmb{\hat{z}} \\
+									      & = \boxed{-21y \pmb{\hat{x}} + 10x \pmb{\hat{y}}} \\ 
+			\boxed{\!\left( \pmb{B} \cdot \nabla \right)\pmb{A}} & = \boxed{3y \pmb{\hat{x}} - 4x \pmb{\hat{y}}} \\
+			\boxed{\!\left( \pmb{A} \cdot \nabla \right)\pmb{B}} & = \boxed{6y \pmb{\hat{x}} - 2x \pmb{\hat{y}}} \\
+			\boxed{\pmb{A}\!\left( \nabla \cdot \pmb{B} \right)} & = \boxed{\pmb{0}} \\
+			\boxed{\pmb{B}\!\left( \nabla \cdot \pmb{A} \right)} & = 6 \pmb{B} \\
+									     & = \boxed{18y \pmb{\hat{x}} - 12x \pmb{\hat{y}}}
+	\end{align*}
+	Combining the last four terms as rule (vi) stipulates, we have
+	\[
+		\!\left( \pmb{B} \cdot \nabla \right)\pmb{A} - \!\left( \pmb{A} \cdot \nabla \right)\pmb{B} + \pmb{A}\!\left( \nabla \cdot \pmb{B} \right) - \pmb{B}\!\left( \nabla \cdot \pmb{A} \right) = -21y \pmb{\hat{x}} + 10x \pmb{\hat{y}} 
+	\]
+\end{enumerate}
+
+\subsubsection{\textsf{1.2.7 - Second Derivatives}}
+% QUESTION 26
+\qs{1.26}{Calculate the Laplacian of the following functions:
+\begin{enumerate}[label=(\alph*)]
+	\item \( T_{a} = x^{2} + 2xy + 3z + 4 \)
+	\item \( T_{b} = \sin\!\left(x\right)\sin\!\left(y\right)\sin\!\left(z\right) \)
+	\item \( T_{c} = e^{-5x}\sin\!\left(4y\right)\cos\!\left(3z\right) \)
+	\item \( \pmb{v} = x^{2}\pmb{\hat{x}} + 3xz^{2}\pmb{\hat{y}} - 2xz \pmb{\hat{z}} \)
+\end{enumerate}}
+
+\begin{enumerate}[label=(\alph*)]
+	\item \[
+		\nabla^{2}T_{a} = \frac{\partial^2 T_{a}}{\partial x^2} + \frac{\partial^2 T_{a}}{\partial y^2} + \frac{\partial^2 T_{a}}{\partial z^2} = 2
+	\]
+	\item \[
+		\nabla^{2}T_{b} = \frac{\partial^2 T_{b}}{\partial x^2} + \frac{\partial^2 T_{b}}{\partial y^2} + \frac{\partial^2 T_{b}}{\partial z^2} = -3 \sin\!\left(x\right)\sin\!\left(y\right)\sin\!\left(z\right)
+	\]
+	\item \[
+		\nabla^{2}T_{c} = \frac{\partial^2 T_{c}}{\partial x^2} + \frac{\partial^2 T_{c}}{\partial y^2} + \frac{\partial^2 T_{c}}{\partial z^2} = \!\left( 25 - 16 - 3 \right)e^{-5x}\sin\!\left(4y\right)\cos\!\left(3z\right) = 0 
+	\]
+	\item \[
+		\nabla^{2}\pmb{v} = \nabla^{2}\!\left( x^{2} \right)\pmb{\hat{x}} + \nabla^{2}\!\left( 3xz^{2} \right)\pmb{\hat{y}} + \nabla^{2}\!\left( -2xz \right)\pmb{\hat{z}} = 2 \pmb{\hat{x}} + 6x \pmb{\hat{y}}
+	\]
+\end{enumerate}
+
+% QUESTION 27
+\qs{1.27}{Prove that the divergence of a curl is always zero. \textit{Check} it for function \( \pmb{v}_{a} \) in Prob. 1.15.}
+
+\( \nabla \cdot \!\left( \nabla \times \pmb{v} \right) = 0 \).
+
+\begin{proof}[Proof]
+\begin{align*}
+	\nabla \times \pmb{v} & = \begin{vmatrix}
+		\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\
+		\frac{\partial }{\partial x} & \frac{\partial }{\partial y} & \frac{\partial }{\partial z} \\
+		v_{x} & v_{y} & v_{z}
+	\end{vmatrix} \\
+	 & = \!\left( \frac{\partial v_{z}}{\partial y} - \frac{\partial v_{y}}{\partial z} \right)\pmb{\hat{x}} + \!\left( \frac{\partial v_{x}}{\partial z} - \frac{\partial v_{z}}{\partial x} \right)\pmb{\hat{y}} + \!\left( \frac{\partial v_{y}}{\partial x} - \frac{\partial v_{x}}{\partial y} \right)\pmb{\hat{z}} \\ 
+		\nabla \cdot \!\left( \nabla \times \pmb{v} \right) & = \frac{\partial }{\partial x}\!\left( \textcolor{red}{\frac{\partial v_{z}}{\partial y}} - \textcolor{blue}{\frac{\partial v_{y}}{\partial z}} \right) + \frac{\partial }{\partial y}\!\left( \textcolor{green}{\frac{\partial v_{x}}{\partial z}} - \textcolor{red}{\frac{\partial v_{z}}{\partial x}} \right) + \frac{\partial }{\partial z}\!\left( \textcolor{blue}{\frac{\partial v_{y}}{\partial x}} - \textcolor{green}{\frac{\partial v_{x}}{\partial y}} \right)
+\end{align*}
+By Clairaut's theorem, assuming continuity of the mixed second partial derivatives, the differentiation is agnostic of order:
+\[
+	\frac{\partial^{2} v_{i}}{\partial j \partial k} = \frac{\partial^{2} v_{i}}{\partial k \partial j} 
+\]
+where the three colored pairs (after distribution) cancel pursuant to Clairaut's theorem. 
+\end{proof}
+Using \( \pmb{v} = \pmb{v}_{a} \), we have
+\begin{align*}
+	\nabla \times \pmb{v}_{a} & = \begin{vmatrix}
+		\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\
+		\frac{\partial }{\partial x} & \frac{\partial }{\partial y} & \frac{\partial }{\partial z} \\
+		x^{2} & 3xz^{2} & -2xz
+	\end{vmatrix} \\
+	 & = -6xz \pmb{\hat{x}} + 2z \pmb{\hat{y}} + 3z^{2}\pmb{\hat{z}} \\ 
+		\nabla \cdot \!\left( \nabla \times \pmb{v}_{a} \right) & = \frac{\partial }{\partial x}\!\left( -6xz \right) + \frac{\partial }{\partial y}\!\left( 2z \right) + \frac{\partial }{\partial z}\!\left( 3z^{2} \right) \\
+									& = 0
+\end{align*}
+
+% QUESTION 28
+\qs{1.28}{Prove that the curl of a gradient is always zero. \textit{Check} it for function (b) in Prob. 1.11.}
+
+\( \nabla \times \!\left( \nabla T \right) = \pmb{0} \).
+\begin{proof}[Proof]
+\begin{align*}
+	\nabla \times \!\left( \nabla T \right) & = \begin{vmatrix}
+		\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\[3pt]
+		\frac{\partial }{\partial x} & \frac{\partial }{\partial y} & \frac{\partial }{\partial z} \\[6pt]
+		\frac{\partial T}{\partial x} & \frac{\partial T}{\partial y} & \frac{\partial T}{\partial z}
+	\end{vmatrix} \\
+	 & = \!\left( \frac{\partial^{2}T}{\partial y \partial z} - \frac{\partial^{2}T}{\partial z \partial y} \right)\pmb{\hat{x}} + \!\left( \frac{\partial^{2}T}{\partial z \partial x} - \frac{\partial^{2}T}{\partial x \partial z} \right)\pmb{\hat{y}} + \!\left( \frac{\partial^{2}T}{\partial x \partial y} - \frac{\partial^{2}T}{\partial y \partial x} \right)\pmb{\hat{z}} \\
+	 & = \pmb{0}
+\end{align*}
+where the last equality follows from Clairaut's theorem.
+\end{proof}
+Using \( f \!\left( x,y,z \right) = x^{2}y^{3}z^{4} \), calculate
+\begin{align*}
+	\nabla f & = 2xy^{3}z^{4}\pmb{\hat{x}} + 3x^{2}y^{2}z^{4}\pmb{\hat{y}} + 4x^{2}y^{3}z^{3}\pmb{\hat{z}} \\
+	\nabla \times \!\left( \nabla f \right) & = \begin{vmatrix}
+		\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\[3pt]
+		\frac{\partial }{\partial x} & \frac{\partial }{\partial y} & \frac{\partial }{\partial z} \\[6pt]
+		2xy^{3}z^{4} & 3x^{2}y^{2}z^{4} & 4x^{2}y^{3}z^{3} \\
+	\end{vmatrix} \\
+						& = \!\left[ \frac{\partial }{\partial y}\!\left( 4x^{2}y^{3}z^{3} \right) - \frac{\partial }{\partial z}\!\left( 3x^{2}y^{2}z^{4} \right) \right]\pmb{\hat{x}} \\
+						& + \quad \!\left[ \frac{\partial }{\partial z}\!\left( 2xy^{3}z^{4} \right) - \frac{\partial }{\partial x}\!\left( 4x^{2}y^{3}z^{3} \right) \right]\pmb{\hat{y}} \\
+						& \qquad + \!\left[ \frac{\partial }{\partial x}\!\left( 3x^{2}y^{2}z^{4} \right) - \frac{\partial }{\partial y}\!\left( 2xy^{3}z^{4} \right) \right]\pmb{\hat{z}} \\
+						& = \pmb{0}
+\end{align*}
+
+\newpage
+
+\subsection{\textsf{1.3 - Integral Calculus}}
+\subsubsection{\textsf{1.3.1 - Line, Surface, and Volume Integrals}}
+% QUESTION 29
+\qs{1.29}{Calculate the line integral of the function \( \pmb{v} = x^{2}\pmb{\hat{x}} + 2yz \pmb{\hat{y}} + y^{2}\pmb{\hat{z}} \) from the origin to the point \( \!\left( 1,1,1 \right) \) by three different routes:
+\begin{enumerate}[label=(\alph*)]
+	\item \( \!\left( 0,0,0 \right) \rightarrow \!\left( 1,0,0 \right) \rightarrow \!\left( 1,1,0 \right) \rightarrow \!\left( 1,1,1 \right) \).
+	\item \( \!\left( 0,0,0 \right) \rightarrow \!\left( 0,0,1 \right) \rightarrow \!\left( 0,1,1 \right) \rightarrow \!\left( 1,1,1 \right) \).
+	\item The direct straight line.
+	\item What is the line integral around the closed loop that goes \textit{out} along path (a) and \textit{back} along path (b)?
+\end{enumerate}}
+
+\begin{figure}[h]
+\centering
+% ---- Path (a): (0,0,0)->(1,0,0)->(1,1,0)->(1,1,1) ----
+\begin{tikzpicture}[scale=1.6,
+    axisstyle/.style={->, gray, thin},
+    pathstyle/.style={->, thick, blue},
+    vertex/.style={circle, fill=black, inner sep=1pt}]
+  % axes (x to the right-front, y to the right-back, z up)
+  \coordinate (O) at (0,0,0);
+  \draw[axisstyle] (O) -- (1.5,0,0) node[right] {\footnotesize $x$};
+  \draw[axisstyle] (O) -- (0,1.5,0) node[above] {\footnotesize $z$};
+  \draw[axisstyle] (O) -- (0,0,1.5) node[below left] {\footnotesize $y$};
+  % path vertices
+  \coordinate (P0) at (0,0,0);
+  \coordinate (P1) at (1,0,0);
+  \coordinate (P2) at (1,0,1);
+  \coordinate (P3) at (1,1,1);
+  % path
+  \draw[pathstyle] (P0) -- (P1) -- (P2) -- (P3);
+  % dots + labels
+  \node[vertex] at (P0) {}; \node[below left]  at (P0) {\scriptsize $(0,0,0)$};
+  \node[vertex] at (P1) {}; \node[below right] at (P1) {\scriptsize $(1,0,0)$};
+  \node[vertex] at (P2) {}; \node[right]       at (P2) {\scriptsize $(1,1,0)$};
+  \node[vertex] at (P3) {}; \node[above right] at (P3) {\scriptsize $(1,1,1)$};
+  \node at (0.75,-0.55,0) {\small (a)};
+\end{tikzpicture}
+\hfill
+% ---- Path (b): (0,0,0)->(0,0,1)->(0,1,1)->(1,1,1) ----
+\begin{tikzpicture}[scale=1.6,
+    axisstyle/.style={->, gray, thin},
+    pathstyle/.style={->, thick, red},
+    vertex/.style={circle, fill=black, inner sep=1pt}]
+  \coordinate (O) at (0,0,0);
+  \draw[axisstyle] (O) -- (1.5,0,0) node[right] {\footnotesize $x$};
+  \draw[axisstyle] (O) -- (0,1.5,0) node[above] {\footnotesize $z$};
+  \draw[axisstyle] (O) -- (0,0,1.5) node[below left] {\footnotesize $y$};
+  \coordinate (P0) at (0,0,0);
+  \coordinate (P1) at (0,1,0);
+  \coordinate (P2) at (0,1,1);
+  \coordinate (P3) at (1,1,1);
+  \draw[pathstyle] (P0) -- (P1) -- (P2) -- (P3);
+  \node[vertex] at (P0) {}; \node[below left]  at (P0) {\scriptsize $(0,0,0)$};
+  \node[vertex] at (P1) {}; \node[left]        at (P1) {\scriptsize $(0,0,1)$};
+  \node[vertex] at (P2) {}; \node[above left]  at (P2) {\scriptsize $(0,1,1)$};
+  \node[vertex] at (P3) {}; \node[above right] at (P3) {\scriptsize $(1,1,1)$};
+  \node at (0.75,-0.55,0) {\small (b)};
+\end{tikzpicture}
+\hfill
+% ---- Path (c): straight line (0,0,0)->(1,1,1) ----
+\begin{tikzpicture}[scale=1.6,
+    axisstyle/.style={->, gray, thin},
+    pathstyle/.style={->, thick, teal},
+    vertex/.style={circle, fill=black, inner sep=1pt}]
+  \coordinate (O) at (0,0,0);
+  \draw[axisstyle] (O) -- (1.5,0,0) node[right] {\footnotesize $x$};
+  \draw[axisstyle] (O) -- (0,1.5,0) node[above] {\footnotesize $z$};
+  \draw[axisstyle] (O) -- (0,0,1.5) node[below left] {\footnotesize $y$};
+  \coordinate (P0) at (0,0,0);
+  \coordinate (P3) at (1,1,1);
+  \draw[pathstyle] (P0) -- (P3);
+  \node[vertex] at (P0) {}; \node[below left]  at (P0) {\scriptsize $(0,0,0)$};
+  \node[vertex] at (P3) {}; \node[above right] at (P3) {\scriptsize $(1,1,1)$};
+  \node at (0.75,-0.55,0) {\small (c)};
+\end{tikzpicture}
+\caption{The three integration routes of Problem 1.29.}
+\end{figure}
+
+For all parts, \( d \pmb{l} = dx \pmb{\hat{x}} + dy \pmb{\hat{y}} + dz \pmb{\hat{z}} \).
+
+\begin{enumerate}[label=(\alph*)]
+	\item \underline{\( \!\left( 0,0,0 \right) \rightarrow \!\left( 1,0,0 \right) \):} We have \( dy = dz = 0 \) and \( y = z = 0 \). Calculate
+	\[
+		\int^{1}_{0} x^{2} \, dx = \frac{1}{3}
+	\]
+	\underline{\( \!\left( 1,0,0 \right) \rightarrow \!\left( 1,1,0 \right) \):} We have \( dx = dz = 0 \), \( x = 1 \), and \( z = 0 \). Then \( \pmb{v} \cdot d \pmb{l} = 0 \), leaving us with \( 0 \) contribution on this section.
+
+	\underline{\( \!\left( 1,1,0 \right) \rightarrow \!\left( 1,1,1 \right) \):} We have \( dx = dy = 0 \) and \( x = y = 1 \). Calculate
+	\[
+		\int^{1}_{0} \, dz = 1  
+	\]
+	Adding the contributions from each path produces \( 4 / 3 \).
+	\item \underline{\( \!\left( 0,0,0 \right) \rightarrow \!\left( 0,0,1 \right) \):} We have \( dx = dy = 0 \) and \( x = y = 0 \). Since \( \pmb{v} \cdot d \pmb{l} = 0 \), the contribution on this section is \( 0 \).	
+
+	\underline{\( \!\left( 0,0,1 \right) \rightarrow \!\left( 0,1,1 \right) \):} We have \( dx = dz = 0 \), \( x = 0 \), and \( z = 1 \). Calculate
+	\[
+		\int^{1}_{0} 2y \, dy = 1
+	\]
+	\underline{\( \!\left( 0,1,1 \right) \rightarrow \!\left( 1,1,1 \right) \):} We have \( dy = dz = 0 \) and \( y = z = 1 \). Calculate
+	\[
+		\int^{1}_{0} x^{2} \, dx = \frac{1}{3}  
+	\]
+	Summing each section's contribution, we have \( 4 / 3 \) yet again.
+	\item Since the line connecting \( \!\left( 0,0,0 \right) \) and \( \!\left( 1,1,1 \right) \) is the set of all \( \!\left( x,y,z \right) \) such that \( x = y = z \), parameterize as \( t \). Then \( dx = dy = dz = dt \), \( d \pmb{l} = dt \!\left( \pmb{\hat{x}} + \pmb{\hat{y}} + \pmb{\hat{z}} \right) \), and \( \pmb{v} = t^{2}\pmb{\hat{x}} + 2t^{2}\pmb{\hat{y}} + t^{2}\pmb{\hat{z}} \). Thus \( \pmb{v} \cdot d \pmb{l} \) gives us
+	\[
+		\pmb{v} \cdot d \pmb{l} = 4t^{2}dt
+	\]
+	Integrating over \( t \in \!\left[ 0,1 \right] \), compute
+	\[
+	 	\int^{1}_{0} 4t^{2} \, dt = \frac{4}{3} 
+	\]
+	\item \[
+		\oint \pmb{v} \cdot d \pmb{l} = \frac{4}{3} - \frac{4}{3} = 0
+	\]
+	These answers are no coincidence, for later we will learn that a vector field \( \pmb{v} \) with the property
+	\[
+		\nabla \times \pmb{v} = \pmb{0}
+	\]
+	is a \textbf{conservative} force. As it turns out, one can verify that this is the case for our \( \pmb{v} \).
+\end{enumerate}
+
+% QUESTION 30
+\qs{1.30}{Calculate the surface integral of the function in Ex. 1.7, over the \textit{bottom} of the box. For consistency, let ``upward'' be the positive direction. Does the surface integral depend only on the boundary line for this function? What is the total flux over the \textit{closed} surface of the box (\textit{including} the bottom)? [\textit{Note}: For the \textit{closed} surface, the positive direction is ``outward,'' and hence ``down,'' for the bottom face.]}
+
+We have \( z = 0 \), \( d \pmb{a} = -dx \, dy \pmb{\hat{z}} \), and \( \pmb{v} \cdot d \pmb{a} = 3y \, dx \, dy \), so we compute
+\[
+	\int^{2}_{0} \, dx \int^{2}_{0} 3y \, dy = 12 
+\]
+From the flux of the other five sides, we sum: \( 20 + 12 = 32 \). In this case, the surface integral depends on the surface itself. The boundary line in equation is the square spanned by \( \!\left( 0,0,0 \right) \) and \( \!\left( 2,2,0 \right) \), which is the boundary line shared by the bottom face, or by the total surface of the \textit{other} five faces combined. Since each surface has a different flux, the surface integral is surface-dependent.
+
+\vspace{12pt}
+
+% QUESTION 31
+\qs{1.31}{Calculate the volume integral of the function \( T = z^{2} \) over the tetrahedron with corners at \( \!\left( 0,0,0 \right) \), \( \!\left( 1,0,0 \right) \), \( \!\left( 0,1,0 \right) \), and \( \!\left( 0,0,1 \right) \).}
+
+% requires \usepackage{tikz-3dplot} in preamble
+\begin{figure}[h]
+\centering
+\tdplotsetmaincoords{70}{125}
+\begin{tikzpicture}[scale=3, tdplot_main_coords,
+    axisstyle/.style={->, gray, thin},
+    edgestyle/.style={thick, blue},
+    hiddenedge/.style={thick, blue, dashed, opacity=0.5},
+    vertex/.style={circle, fill=black, inner sep=1.2pt}]
+
+  % vertices
+  \coordinate (O) at (0,0,0);
+  \coordinate (X) at (1,0,0);
+  \coordinate (Y) at (0,1,0);
+  \coordinate (Z) at (0,0,1);
+
+  % axes (drawn slightly beyond the unit points)
+  \draw[axisstyle] (0,0,0) -- (1.4,0,0) node[anchor=north east] {\footnotesize $x$};
+  \draw[axisstyle] (0,0,0) -- (0,1.4,0) node[anchor=north west] {\footnotesize $y$};
+  \draw[axisstyle] (0,0,0) -- (0,0,1.4) node[anchor=south]      {\footnotesize $z$};
+
+  % shaded faces (the three visible ones)
+  \fill[blue!12, opacity=0.6] (X) -- (Y) -- (Z) -- cycle; % slanted front face
+  \fill[blue!20, opacity=0.5] (O) -- (X) -- (Z) -- cycle; % xz face
+  \fill[blue!8,  opacity=0.5] (O) -- (Y) -- (Z) -- cycle; % yz face
+
+  % edges: visible solid
+  \draw[edgestyle] (X) -- (Y) -- (Z) -- cycle; % the slanted triangle
+  \draw[edgestyle] (O) -- (X);
+  \draw[edgestyle] (O) -- (Z);
+  % edge along y sits "behind" -> dashed
+  \draw[hiddenedge] (O) -- (Y);
+
+  % vertex dots
+  \foreach \p in {O,X,Y,Z} \node[vertex] at (\p) {};
+
+  % --- customize each label independently: tweak xshift / yshift (in pt) ---
+  \node[xshift=-15pt,  yshift=5pt] at (O) {\scriptsize $(0,0,0)$};
+  \node[xshift= 6pt,  yshift=-8pt] at (X) {\scriptsize $(1,0,0)$};
+  \node[xshift= 15pt,  yshift= 5pt] at (Y) {\scriptsize $(0,1,0)$};
+  \node[xshift= -15pt,  yshift= 8pt] at (Z) {\scriptsize $(0,0,1)$};
+
+\end{tikzpicture}
+\caption{The tetrahedron of Problem 1.31, with vertices at the origin and the three unit axis points.}
+\end{figure}
+
+The plane traced out by the tetrahedron has shape \( x + y + z = 1 \). A clever approach is to consider a horizontal cross-section of the tetrahedron (i.e. fixing \( z \) at some constant), and the dimensions of the triangle traced out by that level surface:
+
+% requires \usepackage{tikz-3dplot} in preamble
+\begin{figure}[H]
+\centering
+\tdplotsetmaincoords{70}{125}
+\begin{tikzpicture}[scale=3.2, tdplot_main_coords,
+    axisstyle/.style={->, gray, thin},
+    edgestyle/.style={thick, blue},
+    hiddenedge/.style={thick, blue, dashed, opacity=0.5},
+    slicestyle/.style={thick, red},
+    vertex/.style={circle, fill=black, inner sep=1.2pt}]
+
+  % tetrahedron vertices
+  \coordinate (O) at (0,0,0);
+  \coordinate (X) at (1,0,0);
+  \coordinate (Y) at (0,1,0);
+  \coordinate (Z) at (0,0,1);
+
+  % --- the slice at height z = h ---
+  \def\h{0.4}
+  % triangle corners at height h: (1-h,0,h), (0,1-h,h), (0,0,h)
+  \coordinate (Sx) at (1-\h,0,\h);
+  \coordinate (Sy) at (0,1-\h,\h);
+  \coordinate (Sc) at (0,0,\h);
+
+  % axes
+  \draw[axisstyle] (0,0,0) -- (1.4,0,0) node[anchor=north east] {\footnotesize $x$};
+  \draw[axisstyle] (0,0,0) -- (0,1.4,0) node[anchor=north west] {\footnotesize $y$};
+  \draw[axisstyle] (0,0,0) -- (0,0,1.4) node[anchor=south]      {\footnotesize $z$};
+
+  % shaded tetrahedron faces (light)
+  \fill[blue!10, opacity=0.4] (X) -- (Y) -- (Z) -- cycle;
+  \fill[blue!16, opacity=0.35] (O) -- (X) -- (Z) -- cycle;
+  \fill[blue!6,  opacity=0.35] (O) -- (Y) -- (Z) -- cycle;
+
+  % tetrahedron edges
+  \draw[edgestyle] (X) -- (Y) -- (Z) -- cycle;
+  \draw[edgestyle] (O) -- (X);
+  \draw[edgestyle] (O) -- (Z);
+  \draw[hiddenedge] (O) -- (Y);
+
+  % the slice triangle
+  \fill[red!25, opacity=0.55] (Sx) -- (Sy) -- (Sc) -- cycle;
+  \draw[slicestyle] (Sx) -- (Sy) -- (Sc) -- cycle;
+
+  % leg labels on the slice
+  \node[red, anchor=north, xshift=4pt, yshift=16pt] at ($(Sc)!0.5!(Sx)$) {\scriptsize $1-z$};
+  \node[red, anchor=west,  xshift=-12pt, yshift=7pt]  at ($(Sc)!0.5!(Sy)$) {\scriptsize $1-z$};
+
+  % vertex dots + labels
+  \foreach \p in {O,X,Y,Z} \node[vertex] at (\p) {};
+  \node[xshift=-15pt,  yshift=5pt] at (O) {\scriptsize $(0,0,0)$};
+  \node[xshift= 6pt,  yshift=-8pt] at (X) {\scriptsize $(1,0,0)$};
+  \node[xshift= 15pt,  yshift= 5pt] at (Y) {\scriptsize $(0,1,0)$};
+  \node[xshift= -15pt,  yshift= 8pt] at (Z) {\scriptsize $(0,0,1)$};
+
+\end{tikzpicture}
+\caption{Horizontal cross-section of the tetrahedron at height $z$: a right triangle with legs $1-z$ and area $\tfrac12(1-z)^2$.}
+\end{figure}
+
+Upon fixing the height of that level surface, we can see that the right triangle traced out by the level surface intersecting with the slanted face of the tetrahedron has legs of equal length \( 1 - z \). The area of this triangle is \( \frac{1}{2}\!\left( 1 - z \right)^{2} \); critically, we ought to make the observation that 
+\[
+	\frac{1}{2}\!\left( 1 - z \right)^{2} = dx \, dy 
+\]
+This simplifies our volume integral to
+\[
+	\int^{1}_{0} z^{2} \cdot \frac{1}{2}\!\left( 1 - z \right)^{2} \, dz = \frac{1}{2}\int^{1}_{0} \!\left( z^{2} - 2z^{3} + z^{4} \right) \, dz = \frac{1}{2}\!\left( \frac{1}{3} - \frac{1}{2} + \frac{1}{5} \right) = \frac{1}{60}
+\]
+
+\subsubsection{\textsf{1.3.3 - The Fundamental Theorem of Gradients}}
+
 
 \end{document}
