@@ -29,6 +29,10 @@
 \usepackage{fancyhdr}
 \usepackage[T1]{fontenc}
 \usepackage{graphicx}
+% The documents sit one level below the project root, where the ScriptR/BoldR
+% symbol PDFs and the chapN/ figure folders live. Listing both "./" and "../"
+% lets those be referenced the same way regardless of where the build runs.
+\graphicspath{{./}{../}}
 \usepackage{mathdots}
 \usepackage{mathtools}
 % \usepackage{microtype}
@@ -48,8 +52,10 @@
 \usepackage{imakeidx}
 
 % fonts
-% use \textsf to change to Computer Modern Bright
-\renewcommand{\sfdefault}{cmbr} % keeps default font Computer Modern Roman
+% use \textsf for the sans family (problem titles, section headings)
+% Latin Modern Sans, not CM Bright: cmbr under T1 has no Type 1 outlines, so it
+% renders as Type 3 bitmaps, which TeXpresso's viewer cannot draw at all.
+\renewcommand{\sfdefault}{lmss} % keeps default font Computer Modern Roman
 
 % makeindex for table of contents
 \makeindex[intoc, title=Index]
@@ -422,3 +428,18 @@ showstringspaces=false
 \newcommand{\qs}[2]{\begin{question*}{#1}{}#2\end{question*}}
 \newcommand{\prp}[2]{\begin{Property*}{#1}{}#2\end{Property*}}
 \newcommand{\lemma}[2]{\begin{Lemma*}{#1}{}#2\end{Lemma*}}
+
+
+%%%%%%%%%%%%%%%%%%%%
+% SHARED DOCUMENT SETTINGS
+%%%%%%%%%%%%%%%%%%%%
+% Moved here from the chapter document's preamble so that every document
+% (chapters and the merged manual) picks up the same settings from one place.
+
+\hfuzz=125pt      % ignore overfull boxes up to 5pt
+\hbadness=10000   % suppress underfull warnings
+
+\usetikzlibrary{arrows.meta, calc, decorations.markings, backgrounds}
+\usepackage{tikz-3dplot}
+\usepackage{float}
+\usepackage{esint}

@@ -3,14 +3,9 @@
 \def\nbook {Introduction to Electrodynamics \\ Fourth Edition}
 \def\nbookshort {Griffiths Electrodynamics}
 
-\input{../headerintroelectrodynamics}
-\hfuzz=125pt  % ignore overfull boxes up to 5pt
-\hbadness=10000 % suppress underfull warnings
-
-\usetikzlibrary{arrows.meta, calc, decorations.markings, backgrounds}
-\usepackage{tikz-3dplot}
-\usepackage{float}       
-\usepackage{esint}
+% Shared preamble. The fallback lets the document build whether the working
+% directory is its own folder or the project root.
+\IfFileExists{headerintroelectrodynamics.tex}{\input{headerintroelectrodynamics}}{\input{../headerintroelectrodynamics}}
 
 \begin{document}
 \maketitle
@@ -19,7 +14,6 @@
 \tableofcontents
 
 \newpage
-
 \section{\textsf{1 - Vector Analysis}}
 \subsection{\textsf{1.1 - Vector Algebra}}
 \subsubsection{\textsf{1.1.1 - Vector Operations}}
@@ -1351,6 +1345,7 @@ For all parts, \( d \pmb{l} = dx \pmb{\hat{x}} + dy \pmb{\hat{y}} + dz \pmb{\hat
 	is a \textbf{conservative} force. As it turns out, one can verify that this is the case for our \( \pmb{v} \).
 \end{enumerate}
 
+\newpage
 % QUESTION 30
 \qs{1.30}{Calculate the surface integral of the function in Ex. 1.7, over the \textit{bottom} of the box. For consistency, let ``upward'' be the positive direction. Does the surface integral depend only on the boundary line for this function? What is the total flux over the \textit{closed} surface of the box (\textit{including} the bottom)? [\textit{Note}: For the \textit{closed} surface, the positive direction is ``outward,'' and hence ``down,'' for the bottom face.]}
 
@@ -1482,6 +1477,595 @@ This simplifies our volume integral to
 \]
 
 \subsubsection{\textsf{1.3.3 - The Fundamental Theorem of Gradients}}
+% QUESTION 32
+\qs{1.32}{Check the fundamental theorem for gradients, using \( T = x^{2} + 4xy + 2yz^{3} \), the points \( \pmb{a} = \!\left( 0,0,0 \right) \), \( \pmb{b} = \!\left( 1,1,1 \right) \), and the three paths in Fig. 1.28:
+\begin{enumerate}[label=(\alph*)]
+	\item \( \!\left( 0,0,0 \right) \rightarrow \!\left( 1,0,0 \right) \rightarrow \!\left( 1,1,0 \right) \rightarrow \!\left( 1,1,1 \right) \);
+	\item \( \!\left( 0,0,0 \right) \rightarrow \!\left( 0,0,1 \right) \rightarrow \!\left( 0,1,1 \right) \rightarrow \!\left( 1,1,1 \right) \);
+	\item the parabolic path \( z = x^{2} \); \( y = x \).
+\end{enumerate}}
 
+\begin{figure}[ht]
+\centering
+\tikzset{
+  griffiths axes/.style={
+    x={(-0.4cm,-0.4cm)}, y={(1cm,0cm)}, z={(0cm,1cm)}, scale=2,
+    line cap=round, line join=round
+  },
+  seg/.style={
+    very thick,
+    postaction={decorate},
+    decoration={markings, mark=at position 0.55 with {\arrow{Stealth}}}
+  },
+  guide/.style={densely dashed, gray, thin},
+  pt/.style={circle, fill, inner sep=1.2pt},
+  lbl a/.style={label={[label distance=3pt]180:$\pmb{a}$}},
+  lbl b/.style={label={[label distance=3pt]30:$\pmb{b}$}}
+}
+%
+% ---------- (a) (0,0,0) -> (1,0,0) -> (1,1,0) -> (1,1,1) ----------
+\begin{tikzpicture}[griffiths axes]
+  \draw[-Stealth] (0,0,0) -- (1.4,0,0) node[pos=1.15] {$x$};
+  \draw[-Stealth] (0,0,0) -- (0,1.4,0) node[right] {$y$};
+  \draw[-Stealth] (0,0,0) -- (0,0,1.4) node[above] {$z$};
+  \draw[guide] (1,1,1) -- (0,1,1) -- (0,1,0);
+  \draw[guide] (0,1,1) -- (0,0,1);
+  \draw[seg] (0,0,0) -- (1,0,0);
+  \draw[seg] (1,0,0) -- (1,1,0);
+  \draw[seg] (1,1,0) -- (1,1,1);
+  \node[pt, lbl a] at (0,0,0) {};
+  \node[pt, label={[label distance=-3pt]60:$\pmb{b}$}] at (1,1,1) {};
+  \node[below] at (0.5,0.7,-0.35) {(a)};
+\end{tikzpicture}
+\hfill
+%
+% ---------- (b) (0,0,0) -> (0,0,1) -> (0,1,1) -> (1,1,1) ----------
+\begin{tikzpicture}[griffiths axes]
+  \draw[-Stealth] (0,0,0) -- (1.4,0,0) node[pos=1.15] {$x$};
+  \draw[-Stealth] (0,0,0) -- (0,1.4,0) node[right] {$y$};
+  \draw[-Stealth] (0,0,0) -- (0,0,1.4) node[above] {$z$};
+  \draw[guide] (1,0,0) -- (1,1,0) -- (1,1,1);
+  \draw[guide] (1,1,0) -- (0,1,0);
+  \draw[seg] (0,0,0) -- (0,0,1);
+  \draw[seg] (0,0,1) -- (0,1,1);
+  \draw[seg] (0,1,1) -- (1,1,1);
+  \node[pt, lbl a] at (0,0,0) {};
+  \node[pt, label={[label distance=-20pt]60:$\pmb{b}$}] at (1,1,1) {};
+  \node[below] at (0.5,0.7,-0.35) {(b)};
+\end{tikzpicture}
+\hfill
+%
+% ---------- (c) parabolic path: y = x, z = x^2 ----------
+\begin{tikzpicture}[griffiths axes]
+  \draw[-Stealth] (0,0,0) -- (1.4,0,0) node[pos=1.15] {$x$};
+  \draw[-Stealth] (0,0,0) -- (0,1.4,0) node[right] {$y$};
+  \draw[-Stealth] (0,0,0) -- (0,0,1.4) node[above] {$z$};
+  \draw[guide] (1,1,1) -- (1,1,0) -- (1,0,0);
+  \draw[guide] (1,1,0) -- (0,1,0);
+  % path: y = x, z = x^2 -- exact parabola as a Bezier, no pgfmath
+  \draw[very thick]
+    (0,0,0) .. controls (1/3,1/3,0) and (2/3,2/3,1/3) .. (1,1,1);
+  % arrowhead on the curve near the midpoint (points along the tangent)
+  \draw[very thick, -Stealth]
+    (0.54,0.54,0.2916) -- (0.58,0.58,0.3364);
+  \node[pt, lbl a] at (0,0,0) {};
+  \node[pt, lbl b] at (1,1,1) {};
+  \node[below] at (0.5,0.7,-0.35) {(c)};
+\end{tikzpicture}
+\caption{The three paths of Problem 1.32 (cf.\ Griffiths Fig.\ 1.28).}
+\label{fig:1.28}
+\end{figure}
+
+The gradient is
+\[
+	\nabla T = \!\left( 2x + 4y \right)\pmb{\hat{x}} + \!\left( 4x + 2z^{3} \right)\pmb{\hat{y}} + 6yz^{2}\pmb{\hat{z}}
+\]
+
+\begin{enumerate}[label=(\alph*)]
+	\item \begin{enumerate}[label=(\roman*)]
+			\item \underline{\( \!\left( 0,0,0 \right) \rightarrow \!\left( 1,0,0 \right) \)}: 
+				\begin{align*}
+					y & = z = dy = dz = 0 \\
+				 \nabla T \cdot d \pmb{l} & = 2x \, dx
+			 	\end{align*}
+			\[
+				\int^{1}_{0} 2x \, dx = 1  
+			\]
+		\item \underline{\( \!\left( 1,0,0 \right) \rightarrow \!\left( 1,1,0 \right) \)}:
+			\begin{align*}
+				x & = 1 \\
+				z & = dx = dz = 0 \\
+				\nabla T \cdot d \pmb{l} & = \!\left( 4x + 2z^{3} \right) \, dy
+			\end{align*}
+			\[
+				\int^{1}_{0} 4 \, dy = 4  
+			\]
+		\item \underline{\( \!\left( 1,1,0 \right) \rightarrow \!\left( 1,1,1 \right) \)}: 
+		\begin{align*}
+			x & = y = 1 \\
+			dx & = dy = 0 \\ 
+			\nabla T \cdot d \pmb{l} & = 6z^{2} \, dz
+		\end{align*}
+		\[
+			\int^{1}_{0} 6z^{2} \, dz = 2  
+		\]
+	\end{enumerate}
+	Combining the path contributions,
+	\[
+		\int^{\pmb{b}}_{\pmb{a}} \nabla T \cdot d \pmb{l} = 7  
+	\]
+	\item \begin{enumerate}[label=(\roman*)]
+		\item \underline{\( \!\left( 0,0,0 \right) \rightarrow \!\left( 0,0,1 \right) \)}:
+		\begin{align*}
+			x & = y = dx = dy = 0 \\
+			\nabla T \cdot d \pmb{l} & = 0
+		\end{align*}
+		\[
+			\int^{1}_{0} 0 \, dz = 0  
+		\]
+		\item \underline{\( \!\left( 0,0,1 \right) \rightarrow \!\left( 0,1,1 \right) \)}:
+		\begin{align*}
+			x & = dx = dz = 0 \\
+			z & = 1 \\ 
+			\nabla T \cdot d \pmb{l} & = 2 \, dy
+		\end{align*}
+		\[
+			\int^{1}_{0} 2 \, dy = 2  
+		\]
+		\item \underline{\( \!\left( 0,1,1 \right) \rightarrow \!\left( 1,1,1 \right) \)}: 
+		\begin{align*}
+			y & = z = 1 \\
+			dy & = dz = 0 \\ 
+			\nabla T \cdot d \pmb{l} & = \!\left( 2x + 4 \right) \, dx
+		\end{align*}
+		\[
+			\int^{1}_{0} \!\left( 2x + 4 \right) \, dx = 5  
+		\]
+	\end{enumerate}
+	Combining the path contributions, we derive the same result, as anticipated from the fundamental theorem for gradients.
+	\[
+		\int^{\pmb{b}}_{\pmb{a}} \nabla T \cdot d \pmb{l} = 7  
+	\]
+	\item From the parabola definition, derive
+	\[
+		dz = 2x \, dx, \qquad dy = dx 
+	\]
+	Then the infinitesimal displacement becomes
+	\[
+		d \pmb{l} = \!\left( \pmb{\hat{x}} + \pmb{\hat{y}} + 2x \pmb{\hat{z}} \right)dx 
+	\]
+	and the gradient, now written exclusively in \( x \):
+	\[
+		\nabla T = 6x \pmb{\hat{x}} + \!\left( 4x + 2x^{6} \right)\pmb{\hat{y}} + 6x^{5}\pmb{\hat{z}} 
+	\]
+	Compute the dot product as 
+	\[
+		\nabla T \cdot d \pmb{l} = 10x + 14x^{6}  
+	\]
+	Integrating the line integral, compute
+	\[
+		\int^{1}_{0} \!\left( 10x + 14x^{6} \right) \, dx = \!\left( 5x^{2} + 2x^{7} \right)\Big|^{1}_{0} = 7
+	\]
+	As expected, the fundamental theorem of gradient works!
+\end{enumerate}
+
+\newpage
+\subsubsection{\textsf{1.3.4 - The Fundamental Theorem for Divergences}}
+% QUESTION 33
+\qs{1.33}{Test the divergence theorem for the function \( \pmb{v} = \!\left( xy \right)\pmb{\hat{x}} + \!\left( 2yz \right)\pmb{\hat{y}} + \!\left( 3zx \right)\pmb{\hat{z}} \). Take as your volume the cube shown in Fig. 1.30, with sides of length \( 2 \).}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[
+  x={(-0.4cm,-0.4cm)}, y={(1cm,0cm)}, z={(0cm,1cm)}, scale=2.8,
+  line cap=round, line join=round,
+  nrm/.style={very thick, -Stealth},
+  base/.style={circle, fill, inner sep=1pt}
+]
+  % axes
+  \draw[-Stealth] (0,0,0) -- (1.9,0,0) node[pos=1.1] {$x$};
+  \draw[-Stealth] (0,0,0) -- (0,1.9,0) node[right] {$y$};
+  \draw[-Stealth] (0,0,0) -- (0,0,1.9) node[above] {$z$};
+
+  % all twelve edges of the unit cube
+  \draw[thick] (1,0,0) -- (1,1,0) -- (1,1,1) -- (1,0,1) -- cycle; % x = 1 face
+  \draw[thick] (0,0,0) -- (0,1,0) -- (0,1,1) -- (0,0,1) -- cycle; % x = 0 face
+  \draw[thick] (1,0,0) -- (0,0,0);
+  \draw[thick] (1,1,0) -- (0,1,0);
+  \draw[thick] (1,1,1) -- (0,1,1);
+  \draw[thick] (1,0,1) -- (0,0,1);
+
+  % outward normals, numbered as in Griffiths Ex. 1.10
+  \draw[nrm] (1,0.5,0.5) -- (1.65,0.5,0.5);   % (i)   +x, toward viewer
+  \draw[nrm] (0,0.5,0.5) -- (-0.65,0.5,0.5);  % (ii)  -x, up-right
+  \draw[nrm] (0.5,1,0.5) -- (0.5,1.65,0.5);   % (iii) +y
+  \draw[nrm] (0.5,0,0.5) -- (0.5,-0.65,0.5);  % (iv)  -y
+  \draw[nrm] (0.5,0.5,1) -- (0.5,0.5,1.65);   % (v)   +z
+  \draw[nrm] (0.5,0.5,0) -- (0.5,0.5,-0.65);  % (vi)  -z
+
+  % dots marking where each normal pierces its face
+  \node[base] at (1,0.5,0.5)  {};
+  \node[base] at (0,0.5,0.5)  {};
+  \node[base] at (0.5,1,0.5)  {};
+  \node[base] at (0.5,0,0.5)  {};
+  \node[base] at (0.5,0.5,1)  {};
+  \node[base] at (0.5,0.5,0)  {};
+
+  % face numbers -- page-coordinate shifts from each arrow tip,
+  % offset perpendicular to the arrow's on-page direction
+  \node[xshift=12pt]              at (1,0.5,0.5)    {(i)};   % beside base, right of shaft
+  \node[xshift=12pt, yshift=2pt]  at (-0.65,0.5,0.5) {(ii)};  % right of tip
+  \node[yshift=-10pt]             at (0.5,1.65,0.5) {(iii)}; % below tip
+  \node[yshift=-10pt]             at (0.5,-0.65,0.5) {(iv)};  % below tip
+  \node[xshift=13pt]              at (0.5,0.5,1.65) {(v)};   % right of tip
+  \node[xshift=13pt]              at (0.5,0.5,-0.65) {(vi)};  % right of tip
+\end{tikzpicture}
+\caption{Cube of length 2 with outward normals on each face (cf.\ Griffiths Fig.\ 1.30).}
+\label{fig:1.30}
+\end{figure}
+
+The divergence is
+\[
+	\nabla \cdot \pmb{v} = 3x + y + 2z 
+\]
+Then its volume integral is
+\[
+	\int_{\mathcal{V}} \nabla \cdot \pmb{v} \, d \tau = \int^{2}_{0} \int^{2}_{0} \int^{2}_{0} \!\left( 3x + y + 2z \right) \, dx \, dy \, dz = 48
+\]
+Now for the surface integral:
+\[
+	\oint_{\mathcal{S}} \pmb{v} \cdot d \pmb{a}  
+\]
+\begin{enumerate}[label=(\roman*)]
+	\item We have \( x = 2 \) and \( \pmb{v} \cdot dy \, dz \pmb{\hat{x}} = 2y \, dy \, dz \).
+	\[
+		\int \pmb{v} \cdot d \pmb{a} = \int^{2}_{0} \int^{2}_{0} 2y \, dy \, dz = 8
+	\]
+	\item \( x = 0 \) and \( -\pmb{v} \cdot dy \, dz \pmb{\hat{x}} = 0 \, dy \, dz \).
+	\[
+		\int \pmb{v} \cdot d \pmb{a} = \int^{2}_{0} \int^{2}_{0} 0 \, dy \, dz = 0
+	\]
+	\item \( y = 2 \) and \( \pmb{v} \cdot dx \, dz \pmb{\hat{y}} = 4z \, dx \, dz \).
+	\[
+		\int \pmb{v} \cdot d \pmb{a} = \int^{2}_{0} \int^{2}_{0} 4z \, dx \, dz = 16
+	\]
+	\item \( y = 0 \) and \( -\pmb{v} \cdot dx \, dz \pmb{\hat{y}} = 0 \, dx \, dz \).
+	\[
+		\int \pmb{v} \cdot d \pmb{a} = \int^{2}_{0} \int^{2}_{0} 0 \, dx \, dz = 0
+	\]
+	\item \( z = 2 \) and \( \pmb{v} \cdot dx \, dy \pmb{\hat{z}} = 6x \, dx \, dy \).
+	\[
+		\int \pmb{v} \cdot d \pmb{a} = \int^{2}_{0} \int^{2}_{0} 6x \, dx \, dy = 24 
+	\]
+	\item \( z = 0 \) and \( -\pmb{v} \cdot dx \, dy \pmb{\hat{z}} = 0 \, dx \, dy \).
+	\[
+		\int \pmb{v} \cdot d \pmb{a} = \int^{2}_{0} \int^{2}_{0} 0 \, dx \, dy = 0 
+	\]
+\end{enumerate}
+Summing the fluxes produces 
+\[
+	\oint_{\mathcal{S}} \pmb{v} \cdot d \pmb{a} = 8 + 16 + 24 = 48 
+\]
+verifying the divergence theorem.
+
+\newpage
+\subsubsection{\textsf{1.3.5 - The Fundamental Theorem for Curls}}
+% QUESTION 34
+\qs{1.34}{Test Stokes' theorem for the function \( \pmb{v} = \!\left( xy \right)\pmb{\hat{x}} + \!\left( 2yz \right)\pmb{\hat{y}} + \!\left( 3zx \right)\pmb{\hat{z}} \) using the triangular shaded area of Fig. 1.34.}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[scale=1.8,
+  midarrow/.style={postaction={decorate},
+    decoration={markings, mark=at position 0.55 with {\arrow{Stealth}}}}]
+  % shaded triangle in the yz-plane
+  \fill[gray!35] (0,0) -- (2,0) -- (0,2) -- cycle;
+  % axes
+  \draw[-Stealth] (0,0) -- (3,0) node[below] {$y$};
+  \draw[-Stealth] (0,0) -- (0,2.7) node[left] {$z$};
+  \draw[-Stealth] (0,0) -- (-0.8,-0.8) node[below left] {$x$};
+  % boundary with circulation arrows (counterclockwise as seen from +x)
+  \draw[midarrow] (0,0) -- (2,0);   % along y
+  \draw[midarrow] (2,0) -- (0,2);   % up the hypotenuse
+  \draw[midarrow] (0,2) -- (0,0);   % down the z-axis
+  % tick labels
+  \node[left]  at (0,2) {$2$};
+  \node[below] at (2,0) {$2$};
+\end{tikzpicture}
+\caption{Griffiths Figure 1.34}
+\end{figure}
+
+Compute
+\begin{align*}
+	\nabla \times \pmb{v} & = \begin{vmatrix}
+		\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\
+		\frac{\partial }{\partial x} & \frac{\partial }{\partial y} & \frac{\partial }{\partial z} \\
+		xy & 2yz & 3zx
+	\end{vmatrix} \\
+	 & = -2y \pmb{\hat{x}} - 3z \pmb{\hat{y}} - x \pmb{\hat{z}}
+\end{align*}
+The surface integral is
+\begin{align*}
+	\int_{\mathcal{S}} \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} & = -\int^{2}_{0} \int^{2 - z}_{0} 2y \, dy \, dz \\
+										  & = -\int^{2}_{0} \!\left( 2 - z \right)^{2} \, dz \\
+										  & = -4z + 2z^{2} - \frac{z^{3}}{3} \Big|^{2}_{0} \\
+										  & = -\frac{8}{3}
+\end{align*}
+Now for the line integral:
+\begin{enumerate}[label=(\roman*)]
+	\item \underline{\( \!\left( 0,0,0 \right) \rightarrow \!\left( 0,2,0 \right) \)}: \( x = z = dx = dz = 0 \), \( d \pmb{l} = dy \pmb{\hat{y}} \), \( \pmb{v} \cdot d \pmb{l} = 0 \, dy \)
+	\[
+		\int \pmb{v} \cdot d \pmb{l} = 0
+	\]
+	\item \underline{\( \!\left( 0,2,0 \right) \rightarrow \!\left( 0,0,2 \right) \)}: 
+	\begin{align*}
+		x & = dx = 0 \\ 
+		d \pmb{l} & = dy \pmb{\hat{y}} + dz \pmb{\hat{z}} = \!\left( \pmb{\hat{y}} - \pmb{\hat{z}} \right)dy \\
+		\pmb{v} \cdot d \pmb{l} & = 2yz \, dy = 2y \!\left( 2 - y \right) \, dy
+	\end{align*}
+	where the hypotenuse of the triangle has equation \( z = 2 - y \), producing \( dz / dy = -1 \iff dz = -dy \). This segment's contribution is
+	\[
+		\int \pmb{v} \cdot d \pmb{l} = \int^{0}_{2} 2y \!\left( 2 - y \right) \, dy = \frac{2}{3}y^{3} - 2y^{2} \Big|^{2}_{0} = -\frac{8}{3}  
+	\]
+	where the bounds are flipped to reflect the movement along the hypotenuse in the negative \( y \)-direction.
+	\item \underline{\( \!\left( 0,0,2 \right) \rightarrow \!\left( 0,0,0 \right) \)}: \( x = y = dx = dy = 0 \), \( d \pmb{l} = dz \pmb{\hat{z}} \), \( \pmb{v} \cdot d \pmb{l} = 0 \, dz \)
+	\[
+		\int \pmb{v} \cdot d \pmb{l} = 0 
+	\]
+\end{enumerate}
+Summed together, we verify Stokes' theorem:
+\[
+	\int \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = \oint \pmb{v} \cdot d \pmb{l} = -\frac{8}{3} 
+\]
+
+% QUESTION 35
+\qs{1.35}{Check Corollary 1 by using the same function and boundary line as in Ex. 1.11, but integrating over the five faces of the cube in Fig. 1.35. The back of the cube is open.}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  x={(-0.4cm,-0.4cm)}, y={(1cm,0cm)}, z={(0cm,1cm)}, scale=2.8,
+  line cap=round, line join=round,
+  nrm/.style={very thick, -Stealth},
+  base/.style={circle, fill, inner sep=1pt}
+]
+  % axes
+  \draw[-Stealth] (0,0,0) -- (1.9,0,0) node[pos=1.1] {$x$};
+  \draw[-Stealth] (0,0,0) -- (0,1.9,0) node[right] {$y$};
+  \draw[-Stealth] (0,0,0) -- (0,0,1.9) node[above] {$z$};
+  % all twelve edges of the unit cube
+  \draw[thick] (1,0,0) -- (1,1,0) -- (1,1,1) -- (1,0,1) -- cycle; % x = 1 face
+  \draw[thick] (0,0,0) -- (0,1,0) -- (0,1,1) -- (0,0,1) -- cycle; % x = 0 face
+  \draw[thick] (1,0,0) -- (0,0,0);
+  \draw[thick] (1,1,0) -- (0,1,0);
+  \draw[thick] (1,1,1) -- (0,1,1);
+  \draw[thick] (1,0,1) -- (0,0,1);
+  % outward normals
+  \draw[nrm] (1,0.5,0.5) -- (1.65,0.5,0.5);   % (i)   +x, toward viewer
+  \draw[nrm] (0.5,1,0.5) -- (0.5,1.65,0.5);   % (iii) +y
+  \draw[nrm] (0.5,0,0.5) -- (0.5,-0.65,0.5);  % (iv)  -y
+  \draw[nrm] (0.5,0.5,1) -- (0.5,0.5,1.65);   % (v)   +z
+  \draw[nrm] (0.5,0.5,0) -- (0.5,0.5,-0.65);  % (ii)  -z
+  % dots marking where each normal pierces its face
+  \node[base] at (1,0.5,0.5)  {};
+  \node[base] at (0.5,1,0.5)  {};
+  \node[base] at (0.5,0,0.5)  {};
+  \node[base] at (0.5,0.5,1)  {};
+  \node[base] at (0.5,0.5,0)  {};
+  % face numbers -- page-coordinate shifts from each arrow tip,
+  % offset perpendicular to the arrow's on-page direction
+  \node[xshift=12pt]              at (1,0.5,0.5)    {(i)};   % beside base, right of shaft
+  \node[yshift=-10pt]             at (0.5,1.65,0.5) {(iii)}; % below tip
+  \node[yshift=-10pt]             at (0.5,-0.65,0.5) {(iv)};  % below tip
+  \node[xshift=13pt]              at (0.5,0.5,1.65) {(v)};   % right of tip
+  \node[xshift=13pt]              at (0.5,0.5,-0.65) {(ii)};  % right of tip
+\end{tikzpicture}
+\caption{Unit cube with outward normals on each face (cf.\ Griffiths Fig.\ 1.35).}
+\label{fig:1.35}
+\end{figure}
+
+Our function is \( \pmb{v} = \!\left( 2xz + 3y^{2} \right)\pmb{\hat{y}} + \!\left( 4yz^{2} \right)\pmb{\hat{z}} \), with 
+\[
+	\nabla \times \pmb{v} = \!\left( 4z^{2} - 2x \right)\pmb{\hat{x}} + 2z \pmb{\hat{z}} 
+\]
+computed in Ex. 1.11. Corollary 1 states that \( \int_{\mathcal{S}} \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} \) depends only on the boundary line, so integrating over the five faces should reproduce the value \( \frac{4}{3} \) obtained in Ex. 1.11 for the square surface at \( x = 0 \). The right-hand rule applied to the boundary circulation makes the normals point outward.
+\begin{enumerate}[label=(\roman*)]
+	\item \( x = 1 \), \( d \pmb{a} = dy \, dz \pmb{\hat{x}} \), \( \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = \!\left( 4z^{2} - 2 \right) \, dy \, dz \).
+	\[
+		\int \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = \int^{1}_{0} \int^{1}_{0} \!\left( 4z^{2} - 2 \right) \, dy \, dz = \frac{4}{3} - 2 = -\frac{2}{3}
+	\]
+	\item \( z = 0 \), \( d \pmb{a} = -dx \, dy \pmb{\hat{z}} \), \( \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = -2z \, dx \, dy = 0 \, dx \, dy \).
+	\[
+		\int \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = 0
+	\]
+	\item \( y = 1 \), \( d \pmb{a} = dx \, dz \pmb{\hat{y}} \), and \( \nabla \times \pmb{v} \) has no \( \pmb{\hat{y}} \) component.
+	\[
+		\int \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = 0
+	\]
+	\item \( y = 0 \), \( d \pmb{a} = -dx \, dz \pmb{\hat{y}} \), likewise.
+	\[
+		\int \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = 0
+	\]
+	\item \( z = 1 \), \( d \pmb{a} = dx \, dy \pmb{\hat{z}} \), \( \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = 2z \, dx \, dy = 2 \, dx \, dy \).
+	\[
+		\int \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = \int^{1}_{0} \int^{1}_{0} 2 \, dx \, dy = 2
+	\]
+\end{enumerate}
+Summing the fluxes produces
+\[
+	\int_{\mathcal{S}} \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = -\frac{2}{3} + 2 = \frac{4}{3}
+\]
+matching Ex. 1.11 and confirming Corollary 1.
+
+\newpage
+\subsubsection{\textsf{1.3.6 - Integration by Parts}}
+% QUESTION 36
+\qs{1.36}{\begin{enumerate}[label=(\alph*)]
+	\item Show that
+	\[
+		\int_{\mathcal{S}} f \!\left( \nabla \times \pmb{A} \right) \cdot d \pmb{a} = \int_{\mathcal{S}}\!\left[ \pmb{A} \times \!\left( \nabla f \right) \right] \cdot d \pmb{a} + \oint_{\mathcal{P}} f \pmb{A} \cdot d \pmb{l} 
+	\]
+	\item Show that
+	\[
+		\int_{\mathcal{V}} \pmb{B} \cdot \!\left( \nabla \times \pmb{A} \right) \, d \tau = \int_{\mathcal{V}} \pmb{A} \cdot \!\left( \nabla \times \pmb{B} \right) \, d \tau + \oint_{\mathcal{S}} \!\left( \pmb{A} \times \pmb{B} \right) \cdot d \pmb{a}
+	\]	
+\end{enumerate}}
+
+\begin{enumerate}[label=(\alph*)]
+	\item From the product rule
+	\[
+		\nabla \times \!\left( f \pmb{A} \right) = f \!\left( \nabla \times \pmb{A} \right) - \pmb{A} \times \!\left( \nabla f \right) 
+	\]
+	Rewrite as 
+	\[
+		f \!\left( \nabla \times \pmb{A} \right) = \pmb{A} \times \!\left( \nabla f \right) + \nabla \times \!\left( f \pmb{A} \right) 
+	\]
+	Take the surface integral of each term to find
+	\[
+		\int_{\mathcal{S}} f \!\left( \nabla \times \pmb{A} \right) \cdot d \pmb{a} = \int_{\mathcal{S}}\!\left[ \pmb{A} \times \!\left( \nabla f \right) \right] \cdot d \pmb{a} + \int_{\mathcal{S}} \nabla \times \!\left( f \pmb{A} \right) \cdot d \pmb{a}
+	\]
+	On the last term, apply Stokes' theorem to convert to a loop integral, leaving us with
+	\[
+		\int_{\mathcal{S}} f \!\left( \nabla \times \pmb{A} \right) \cdot d \pmb{a} = \int_{\mathcal{S}}\!\left[ \pmb{A} \times \!\left( \nabla f \right) \right] \cdot d \pmb{a} + \oint_{\mathcal{P}} f \pmb{A} \cdot d \pmb{l}
+	\]
+	\item From the product rule
+	\[
+		\nabla \cdot \!\left( \pmb{A} \times \pmb{B} \right) = \pmb{B} \cdot \!\left( \nabla \times \pmb{A} \right) - \pmb{A} \cdot \!\left( \nabla \times \pmb{B} \right)
+	\]
+	Rewrite as 
+	\[
+		\pmb{B} \cdot \!\left( \nabla \times \pmb{A} \right) = \pmb{A} \cdot \!\left( \nabla \times \pmb{B} \right) + \nabla \cdot \!\left( \pmb{A} \times \pmb{B} \right) 
+	\]
+	Take the volume integral of each term to find
+	\[
+		\int_{\mathcal{V}}\pmb{B} \cdot \!\left( \nabla \times \pmb{A} \right) \, d \tau = \int_{\mathcal{V}}\pmb{A} \cdot \!\left( \nabla \times \pmb{B} \right) \, d \tau + \int_{\mathcal{V}}\nabla \cdot \!\left( \pmb{A} \times \pmb{B} \right) \, d \tau
+	\]
+	By the divergence theorem, convert the last term to the surface flux to derive
+	\[
+		\int_{\mathcal{V}}\pmb{B} \cdot \!\left( \nabla \times \pmb{A} \right) \, d \tau = \int_{\mathcal{V}}\pmb{A} \cdot \!\left( \nabla \times \pmb{B} \right) \, d \tau + \oint_{\mathcal{S}} \!\left( \pmb{A} \times \pmb{B} \right) \cdot d \pmb{a}
+	\]
+\end{enumerate}
+
+\newpage
+\subsection{\textsf{1.4 - Curvilinear Coordinates}}
+% QUESTION 37
+\qs{1.37}{Find formulas for \( r \), \( \theta \), \( \phi \) in terms of \( x \), \( y \), \( z \) (the inverse, in other words, of Eq. 1.62).}
+
+The transformation from Cartesian to spherical coordinates is given by Equation 1.62:
+\[
+	x = r \sin\!\left(\theta\right)\cos\!\left(\phi\right), \qquad y = r \sin\!\left(\theta\right)\sin\!\left(\phi\right), \qquad z = r \cos\!\left(\theta\right) 
+\]
+The radial length is derived as the positive root of
+\begin{align*}
+	r^{2} & = r^{2}\!\left[ \sin^{2}\!\left(\theta\right) + \cos^{2}\!\left(\theta\right) \right] \\ 
+	      & = \!\left[ r^{2}\sin^{2}\!\left(\theta\right)\cos^{2}\!\left(\phi\right) + r^{2}\sin^{2}\!\left(\theta\right)\sin^{2}\!\left(\phi\right) \right] + r^{2}\cos^{2}\!\left(\theta\right) \\
+	      & = x^{2} + y^{2} + z^{2}
+\end{align*}
+For \( \theta \), in the \( z \)-equation, isolate \( \theta \):
+\[
+	\frac{z}{r} = \frac{z}{\sqrt{x^{2} + y^{2} + z^{2}}} = \cos\!\left(\theta\right) \quad \implies \quad \theta = \cos^{-1}\!\left(\frac{z}{\sqrt{x^{2} + y^{2} + z^{2}}}\right) 
+\]
+Lastly, for \( \phi \), divide \( y \) by \( x \) to find
+\[
+	\frac{y}{x} = \tan\!\left(\phi\right) \quad \implies \quad \phi = \tan^{-1}\!\left(\frac{y}{x}\right)
+\]
+which is specifically defined on \( \!\left( -\pi / 2, \pi / 2 \right) \).
+
+\vspace{12pt}
+
+% QUESTION 38
+\qs{1.38}{Express the unit vectors \( \pmb{\hat{r}} \), \( \pmb{\hat{\theta}} \), \( \pmb{\hat{\phi}} \) in terms of \( \pmb{\hat{x}} \), \( \pmb{\hat{y}} \), \( \pmb{\hat{z}} \) (that is, derive Eq. 1.64). Check your answers several ways (\( \pmb{\hat{r}} \cdot \pmb{\hat{r}} \overset{?}{=} 1 \), \( \pmb{\hat{\theta}} \cdot \pmb{\hat{\phi}} \overset{?}{=} 0 \), \( \pmb{\hat{r}} \times \pmb{\hat{\theta}} \overset{?}{=} \pmb{\hat{\phi}} \)...). Also work out the inverse formulas, giving \( \pmb{\hat{x}} \), \( \pmb{\hat{y}} \), \( \pmb{\hat{z}} \) in terms of \( \pmb{\hat{r}} \), \( \pmb{\hat{\theta}} \), \( \pmb{\hat{\phi}} \) (and \( \theta \), \( \phi \)).}
+
+Using the mappings from \( \!\left( x,y,z \right) \) to \( \!\left( r, \theta, \phi \right) \) in Equation 1.62, we can first derive our unit radial vector as 
+\[
+	\pmb{\hat{r}} = \frac{\pmb{r}}{\abs{\pmb{r}}} = \sin\!\left(\theta\right)\cos\!\left(\phi\right)\pmb{\hat{x}} + \sin\!\left(\theta\right)\sin\!\left(\phi\right)\pmb{\hat{y}} + \cos\!\left(\theta\right)\pmb{\hat{z}} 
+\]
+where \( \abs{\pmb{r}} = r \). To find the direction of increasing \( \theta \), which is definitionally what \( \pmb{\hat{\theta}} \) is, we first differentiate \( \pmb{\hat{r}} \) with respect to \( \theta \) to get \( \pmb{\theta} = \partial \pmb{\hat{r}} / \partial \theta \), and normalize to find
+\[
+	\pmb{\hat{\theta}} = \frac{\partial \pmb{\hat{r}} / \partial \theta}{\abs{\partial \pmb{\hat{r}} / \partial \theta}} = \frac{\pmb{\theta}}{\abs{\pmb{\theta}}} = \cos\!\left(\theta\right)\cos\!\left(\phi\right)\pmb{\hat{x}} + \cos\!\left(\theta\right)\sin\!\left(\phi\right)\pmb{\hat{y}} - \sin\!\left(\theta\right)\pmb{\hat{z}}
+\]
+where \( \abs{\pmb{\theta}} = 1 \). Lastly, differentiate \( \pmb{\hat{r}} \) with respect to \( \phi \) to get \( \pmb{\phi} = \partial \pmb{\hat{r}} / \partial \phi \), and normalize:
+\[
+	\pmb{\hat{\phi}} = \frac{\partial \pmb{\hat{r}} / \partial \phi}{\abs{\partial \pmb{\hat{r}} / \partial \phi}} = \frac{\pmb{\phi}}{\abs{\pmb{\phi}}} = -\sin\!\left(\phi\right)\pmb{\hat{x}} + \cos\!\left(\phi\right)\pmb{\hat{y}} 
+\]
+where \( \abs{\pmb{\phi}} = \sin\!\left(\theta\right) \). Verifying in the recommended ways, we can compute
+\begin{align*}
+	\pmb{\hat{r}} \cdot \pmb{\hat{r}} & = \sin^{2}\!\left(\theta\right)\!\left[ \cos^{2}\!\left(\phi\right) + \sin^{2}\!\left(\phi\right) \right] + \cos^{2}\!\left(\theta\right) \\
+	 & = \sin^{2}\!\left(\theta\right) + \cos^{2}\!\left(\theta\right) \\ 
+	 & = 1 \\
+	\pmb{\hat{\theta}} \cdot \pmb{\hat{\phi}} & = -\cos\!\left(\theta\right)\cos\!\left(\phi\right)\sin\!\left(\phi\right) + \cos\!\left(\theta\right)\sin\!\left(\phi\right)\cos\!\left(\phi\right) \\
+						  & = 0 \\
+	\pmb{\hat{r}} \times \pmb{\hat{\theta}} & = \begin{vmatrix}
+		\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\
+		\sin\!\left(\theta\right)\cos\!\left(\phi\right) & \sin\!\left(\theta\right)\sin\!\left(\phi\right) & \cos\!\left(\theta\right) \\
+		\cos\!\left(\theta\right)\cos\!\left(\phi\right) & \cos\!\left(\theta\right)\sin\!\left(\phi\right) & -\sin\!\left(\theta\right)
+	\end{vmatrix} \\
+						& = -\sin\!\left(\phi\right)\pmb{\hat{x}} + \cos\!\left(\phi\right)\pmb{\hat{y}} \\
+						& = \pmb{\hat{\phi}}
+\end{align*}
+Finally, the inverse formulas. We may write our existing formulas as follows:
+\[
+	\begin{pmatrix}
+		\sin\!\left(\theta\right)\cos\!\left(\phi\right) & \sin\!\left(\theta\right)\sin\!\left(\phi\right) & \cos\!\left(\theta\right) \\
+		\cos\!\left(\theta\right)\cos\!\left(\phi\right) & \cos\!\left(\theta\right)\sin\!\left(\phi\right) & -\sin\!\left(\theta\right) \\
+		-\sin\!\left(\phi\right) & \cos\!\left(\phi\right) & 0
+	\end{pmatrix} 
+	\begin{pmatrix}
+		\pmb{\hat{x}} \\
+		\pmb{\hat{y}} \\
+		\pmb{\hat{z}}
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		\pmb{\hat{r}} \\
+		\pmb{\hat{\theta}} \\
+		\pmb{\hat{\phi}}
+	\end{pmatrix}
+\]
+Now, take note of this insight: the rows of the coefficient matrix form an \textbf{orthonormal basis}, rendering the matrix itself \textbf{orthogonal}. Therefore it satisfies the property
+\[
+	A^{-1} = A^{\textsc{T}} 
+\]
+Ergo, we can immediately write
+\[
+	\begin{pmatrix}
+		\pmb{\hat{x}} \\
+		\pmb{\hat{y}} \\
+		\pmb{\hat{z}}
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		\sin\!\left(\theta\right)\cos\!\left(\phi\right) & \cos\!\left(\theta\right)\cos\!\left(\phi\right) & -\sin\!\left(\phi\right) \\
+		\sin\!\left(\theta\right)\sin\!\left(\phi\right) & \cos\!\left(\theta\right)\sin\!\left(\phi\right) & \cos\!\left(\phi\right) \\
+		\cos\!\left(\theta\right) & -\sin\!\left(\theta\right) & 0
+	\end{pmatrix}
+	\begin{pmatrix}
+		\pmb{\hat{r}} \\
+		\pmb{\hat{\theta}} \\
+		\pmb{\hat{\phi}}
+	\end{pmatrix}
+\]
+which leaves us with
+\begin{align*}
+	\pmb{\hat{x}} & = \sin\!\left(\theta\right)\cos\!\left(\phi\right)\pmb{\hat{r}} + \cos\!\left(\theta\right)\cos\!\left(\phi\right)\pmb{\hat{\theta}} - \sin\!\left(\phi\right)\pmb{\hat{\phi}} \\
+	\pmb{\hat{y}} & = \sin\!\left(\theta\right)\sin\!\left(\phi\right)\pmb{\hat{r}} + \cos\!\left(\theta\right)\sin\!\left(\phi\right)\pmb{\hat{\theta}} + \cos\!\left(\phi\right)\pmb{\hat{\phi}} \\ 
+	\pmb{\hat{z}} & = \cos\!\left(\theta\right)\pmb{\hat{r}} - \sin\!\left(\theta\right)\pmb{\hat{\theta}}
+\end{align*}
+
+% QUESTION 1.39
+\qs{1.39}{\begin{enumerate}[label=(\alph*)]
+	\item Check the divergence theorem for the function \( \pmb{v}_{1} = r^{2}\pmb{\hat{r}} \), using as your volume the sphere of radius \( R \), centered at the origin.
+	\item Do the same for \( \pmb{v}_{2} = \!\left( 1 / r^{2} \right)\pmb{\hat{r}} \). (If the answer surprises you, look back at Prob. 1.16.)
+\end{enumerate}}
+
+First calculate the integrand
+\begin{align*}
+	\nabla \cdot \pmb{v}_{1} & = \frac{1}{r^{2}}\frac{\partial }{\partial r}\!\left( r^{4} \right) \\
+	 & = 4r
+\end{align*}
+which we evaluate as 
+\[
+	\int_{\mathcal{V}} 
+\]
 
 \end{document}
