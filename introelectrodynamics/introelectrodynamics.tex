@@ -1948,6 +1948,7 @@ matching Ex. 1.11 and confirming Corollary 1.
 
 \newpage
 \subsection{\textsf{1.4 - Curvilinear Coordinates}}
+\subsubsection{\textsf{1.4.1 - Spherical Coordinates}}
 % QUESTION 37
 \qs{1.37}{Find formulas for \( r \), \( \theta \), \( \phi \) in terms of \( x \), \( y \), \( z \) (the inverse, in other words, of Eq. 1.62).}
 
@@ -2058,14 +2059,728 @@ which leaves us with
 	\item Do the same for \( \pmb{v}_{2} = \!\left( 1 / r^{2} \right)\pmb{\hat{r}} \). (If the answer surprises you, look back at Prob. 1.16.)
 \end{enumerate}}
 
-First calculate the integrand
-\begin{align*}
-	\nabla \cdot \pmb{v}_{1} & = \frac{1}{r^{2}}\frac{\partial }{\partial r}\!\left( r^{4} \right) \\
-	 & = 4r
-\end{align*}
-which we evaluate as 
+\begin{enumerate}[label=(\alph*)]
+	\item First calculate the integrand
+	\begin{align*}
+		\nabla \cdot \pmb{v}_{1} & = \frac{1}{r^{2}}\frac{\partial }{\partial r}\!\left( r^{4} \right) \\
+		 & = 4r
+	\end{align*}
+	which we evaluate as 
+	\[
+		\int_{\mathcal{V}} 4r \, d \tau = \int^{2 \pi}_{0} \int^{\pi}_{0} \int^{R}_{0} 4r^{3}\sin\!\left(\theta\right) \, dr \, d \theta \, d \phi = 4 \pi R^{4}
+	\]
+	For the surface integral, compute
+	\[
+		\oint_{\mathcal{S}}\pmb{v}_{1} \cdot d \pmb{a} = \int^{2 \pi}_{0} \int^{\pi}_{0} R^{4}\sin\!\left(\theta\right) \, d \theta \, d \phi = 4 \pi R^{4}
+	\]
+	Hence the divergence theorem holds.
+	\item The divergence is given by
+	\[
+		\nabla \cdot \pmb{v}_{2} = \frac{1}{r^{2}}\frac{\partial }{\partial r}\!\left( 1 \right) = 0
+	\]
+	And so the volume integral is correspondingly
+	\[
+		\int_{\mathcal{V}} 0 \, d \tau = 0
+	\]
+	Similar to problem 1.16, the evaluation of the divergence is zero, but only because the divergence is undefined at \( r = 0 \). In truth, the divergence is infinitely concentrated at the origin. In a future section on the three-dimensional delta function, we will see that the divergence is actually \( 4 \pi \delta^{3}\!\left( \pmb{r} \right) \).
+
+	The surface integral evaluates to
+	\[
+		\oint_{\mathcal{S}}\pmb{v}_{2} \cdot d \pmb{a} = \int^{2 \pi}_{0} \int^{\pi}_{0} \sin\!\left(\theta\right) \, d \theta \, d \phi = 4 \pi
+	\]
+\end{enumerate}
+
+% QUESTION 40
+\qs{1.40}{Compute the divergence of the function
 \[
-	\int_{\mathcal{V}} 
+	\pmb{v} = r \cos\!\left(\theta\right)\pmb{\hat{r}} + r \sin\!\left(\theta\right)\pmb{\hat{\theta}} + r \sin\!\left(\theta\right)\cos\!\left(\phi\right)\pmb{\hat{\phi}} 
 \]
+Check the divergence theorem for this function, using as your volume the inverted hemispherical bowl of radius \( R \), resting on the \( xy \) plane and centered at the origin (Fig. 1.40).}
+\begin{align*}
+	\nabla \cdot \pmb{v} & = \frac{1}{r^{2}}\frac{\partial }{\partial r}\!\left( r^{3}\cos\!\left(\theta\right) \right) + \frac{1}{r \sin\!\left(\theta\right)}\frac{\partial }{\partial \theta}\!\left( r \sin^{2}\!\left(\theta\right) \right) + \frac{1}{r \sin\!\left(\theta\right)}\frac{\partial }{\partial \phi}\!\left( r \sin\!\left(\theta\right)\cos\!\left(\phi\right) \right) \\
+	 & = 5 \cos\!\left(\theta\right) - \sin\!\left(\phi\right)
+\end{align*}
+The volume integral is given by
+\[
+	\int_{\mathcal{V}}\nabla \cdot \pmb{v} \, d \tau = \int^{2 \pi}_{0} \int^{\pi / 2}_{0} \int^{R}_{0} r^{2}\sin\!\left(\theta\right)\!\left[ 5 \cos\!\left(\theta\right) - \sin\!\left(\phi\right) \right] \, dr \, d \theta \, d \phi = \frac{5 \pi R^{3}}{3} 
+\]
+and the surface integral
+\begin{align*}
+	\oint_{\mathcal{S}}\pmb{v} \cdot d \pmb{a} & = \int^{2 \pi}_{0} \int^{\pi / 2}_{0} R^{3}\sin\!\left(\theta\right)\cos\!\left(\theta\right) \, d \theta \, d \phi + \int^{2 \pi}_{0} \int^{R}_{0} r^{2} \, dr \, d \phi \\
+						   & = \pi R^{3} + \frac{2 \pi R^{3}}{3} \\
+						   & = \frac{5 \pi R^{3}}{3}
+\end{align*}
+verifying the divergence theorem.
+
+\vspace{12pt}
+
+% QUESTION 41
+\qs{1.41}{Compute the gradient and Laplacian of the function \( T = r \!\left[ \cos\!\left(\theta\right) + \sin\!\left(\theta\right)\cos\!\left(\phi\right) \right] \). Check the Laplacian by converting \( T \) to Cartesian coordinates and using Eq. 1.42. Test the gradient theorem for this function, using the path shown in Fig. 1.41, from \( \!\left( 0,0,0 \right) \) to \( \!\left( 0,0,2 \right) \).}
+
+\begin{align*}
+	\nabla T & = \!\left[ \cos\!\left(\theta\right) + \sin\!\left(\theta\right)\cos\!\left(\phi\right) \right]\pmb{\hat{r}} + \!\left[ \cos\!\left(\theta\right)\cos\!\left(\phi\right) - \sin\!\left(\theta\right) \right]\pmb{\hat{\theta}} - \sin\!\left(\phi\right)\pmb{\hat{\phi}} \\
+	\nabla^{2}T & = \frac{2}{r}\!\left[ \cos\!\left(\theta\right) + \sin\!\left(\theta\right)\cos\!\left(\phi\right) \right] + \frac{1}{r^{2}\sin\!\left(\theta\right)}\frac{\partial }{\partial \theta}\!\left( r \!\left[ \sin\!\left(\theta\right)\cos\!\left(\theta\right)\cos\!\left(\phi\right) - \sin^{2}\!\left(\theta\right) \right] \right) \\
+		    & \qquad - \frac{\cos\!\left(\phi\right)}{r \sin\!\left(\theta\right)} \\
+		    & = \frac{2}{r}\!\left[ \cos\!\left(\theta\right) + \sin\!\left(\theta\right)\cos\!\left(\phi\right) \right] + \frac{1}{r \sin\!\left(\theta\right)}\!\left[ \!\left( \cos^{2}\!\left(\theta\right) - \sin^{2}\!\left(\theta\right) \right)\cos\!\left(\phi\right) - 2 \sin\!\left(\theta\right)\cos\!\left(\theta\right) \right] \\
+		    & \qquad - \frac{\cos\!\left(\phi\right)}{r \sin\!\left(\theta\right)} \\
+		    & = 0
+\end{align*}
+In Cartesian coordinates,
+\[
+	T = x + z 
+\]
+Which we can simply calculate the Laplacian as 
+\[
+	\nabla^{2}T = \frac{\partial^2 T}{\partial x^2} + \frac{\partial^2 T}{\partial y^2} + \frac{\partial^2 T}{\partial z^2} = 0 
+\]
+A lesson learned: computations can be made extremely simply or extremely complicated depending on choice of coordinate system. Lastly, by the gradient theorem (path independence), we compute (in Cartesian coordinates)
+\begin{align*}
+	\int^{\pmb{b}}_{\pmb{a}} \!\left( \nabla T \right) \cdot \, d \pmb{l} & = \int^{2}_{0}  \, dz \\
+									      & = T \!\left( 0,0,2 \right) - T \!\left( 0,0,0 \right) \\
+									      & = 2
+\end{align*}
+
+\newpage
+\subsubsection{\textsf{1.4.2 - Cylindrical Coordinates}}
+% QUESTION 42
+\qs{1.42}{Express the cylindrical unit vectors \( \pmb{\hat{s}} \), \( \pmb{\hat{\phi}} \), \( \pmb{\hat{z}} \) in terms of \( \pmb{\hat{x}} \), \( \pmb{\hat{y}} \), \( \pmb{\hat{z}} \) (that is, derive Eq. 1.75). ``Invert'' your formulas to get \( \pmb{\hat{x}} \), \( \pmb{\hat{y}} \), \( \pmb{\hat{z}} \) in terms of \( \pmb{\hat{s}} \), \( \pmb{\hat{\phi}} \), \( \pmb{\hat{z}} \) (and \( \phi \)).}
+
+As a conceptual matter, note that \( \pmb{\hat{s}} \) and \( \pmb{\hat{\phi}} \) live in the \( xy \) plane. Using Equation 1.74, we have 
+\[
+	\pmb{\hat{s}} = \frac{\pmb{s}}{\abs{\pmb{s}}} = \cos\!\left(\phi\right)\pmb{\hat{x}} + \sin\!\left(\phi\right)\pmb{\hat{y}}
+\]
+where \( \abs{\pmb{s}} = s \). To find the orthogonal unit vector in \( \phi \), differentiate \( \pmb{\hat{s}} \) with respect to \( \phi \) and normalize to derive
+\[
+	\pmb{\hat{\phi}} = \frac{\partial \pmb{\hat{s}} / \partial \phi}{\abs{\partial \pmb{\hat{s}} / \partial \phi}} = -\sin\!\left(\phi\right)\pmb{\hat{x}} + \cos\!\left(\phi\right)\pmb{\hat{y}}
+\]
+where \( \abs{\partial \pmb{\hat{s}} / \partial \phi} = 1 \). The easiest is \( \pmb{\hat{z}} \):
+\[
+	\pmb{\hat{z}} = \pmb{\hat{z}} 
+\]
+Writing the coordinate transformation in matrix form:
+\[
+	\begin{pmatrix}
+		\cos\!\left(\phi\right) & \sin\!\left(\phi\right) & 0 \\
+		-\sin\!\left(\phi\right) & \cos\!\left(\phi\right) & 0 \\
+		0 & 0 & 1
+	\end{pmatrix}
+	\begin{pmatrix}
+		\pmb{\hat{x}} \\
+		\pmb{\hat{y}} \\
+		\pmb{\hat{z}}
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		\pmb{\hat{s}} \\
+		\pmb{\hat{\phi}} \\
+		\pmb{\hat{z}}
+	\end{pmatrix}
+\]
+Once again appealing to orthogonality of the coefficient matrix, we can see that its inverse is equal to its transpose, and thus write
+\[
+ 	\begin{pmatrix}
+		\pmb{\hat{x}} \\
+		\pmb{\hat{y}} \\
+		\pmb{\hat{z}}
+	\end{pmatrix}
+	=
+	\begin{pmatrix}
+		\cos\!\left(\phi\right) & -\sin\!\left(\phi\right) & 0 \\
+		\sin\!\left(\phi\right) & \cos\!\left(\phi\right) & 0 \\
+		0 & 0 & 1
+	\end{pmatrix}
+	\begin{pmatrix}
+		\pmb{\hat{s}} \\
+		\pmb{\hat{\phi}} \\
+		\pmb{\hat{z}}
+	\end{pmatrix}
+\]
+which produces inverse transformations
+\begin{align*}
+	\pmb{\hat{x}} & = \cos\!\left(\phi\right)\pmb{\hat{s}} - \sin\!\left(\phi\right)\pmb{\hat{\phi}} \\
+	\pmb{\hat{y}} & = \sin\!\left(\phi\right)\pmb{\hat{s}} + \cos\!\left(\phi\right)\pmb{\hat{\phi}} \\ 
+	\pmb{\hat{z}} & = \pmb{\hat{z}}
+\end{align*}
+
+\newpage
+% QUESTION 43
+\qs{1.43}{\begin{enumerate}[label=(\alph*)]
+	\item Find the divergence of the function
+	\[
+		\pmb{v} = s \!\left( 2 + \sin^{2}\!\left(\phi\right) \right)\pmb{\hat{s}} + s \sin\!\left(\phi\right)\cos\!\left(\phi\right)\pmb{\hat{\phi}} + 3z \pmb{\hat{z}} 
+	\]
+	\item Test the divergence theorem for this function, using the quarter-cylinder (radius 2, height 5) shown in Fig. 1.43.
+	\item Find the curl of \( \pmb{v} \).
+\end{enumerate}}
+
+\begin{enumerate}[label=(\alph*)]
+	\item \begin{align*}
+		\nabla \cdot \pmb{v} & = \frac{1}{s}\frac{\partial }{\partial s}\!\left[ s^{2}\!\left( 2 + \sin^{2}\!\left(\phi\right) \right) \right] + \frac{1}{s}\frac{\partial }{\partial \phi}\!\left[ s \sin\!\left(\phi\right)\cos\!\left(\phi\right) \right] + \frac{\partial }{\partial z}\!\left( 3z \right) \\
+				     & = 4 + 2 \sin^{2}\!\left(\phi\right) + \cos^{2}\!\left(\phi\right) - \sin^{2}\!\left(\phi\right) + 3 \\
+				     & = 8
+	\end{align*}
+	\item The volume integral is
+	\[
+		\int_{\mathcal{V}}\nabla \cdot \pmb{v} \, d \tau = \int^{5}_{0} \int^{\pi / 2}_{0} \int^{2}_{0} 8s \, ds \, d \phi \, dz = 40 \pi  
+	\]
+	and the surface integral, after formulating infinitesimal areas \( s \, ds \, d \phi \, \pmb{\hat{z}} \), \( ds \, dz \, \pmb{\hat{\phi}} \), and \( s \, d \phi \, dz \, \pmb{\hat{s}} \) (where the variable held constant corresponds to the unit vector), is given by
+	\begin{align*}
+		\oint_{\mathcal{S}}\pmb{v} \cdot d \pmb{a} & = \int^{\pi / 2}_{0} \int^{2}_{0} 3 \cdot 5s \, ds \, d \phi + \int^{5}_{0} \int^{\pi / 2}_{0} 2^{2}\!\left( 2 + \sin^{2}\!\left(\phi\right) \right) \, d \phi \, dz \\
+							   & = 15 \pi + 25 \pi \\
+							   & = 40 \pi
+	\end{align*}
+	verifying that the divergence theorem works.
+	\item \[
+		\nabla \times \pmb{v} = \frac{1}{s}\!\left[ \frac{\partial }{\partial s}\!\left( s^{2}\sin\!\left(\phi\right)\cos\!\left(\phi\right) \right) - \frac{\partial }{\partial \phi}s \!\left( 2 + \sin^{2}\!\left(\phi\right) \right) \right]\pmb{\hat{z}} = \pmb{0}
+	\]
+\end{enumerate}
+
+\newpage
+\subsection{\textsf{1.5 - The Dirac Delta Function}}
+\subsubsection{\textsf{1.5.2 - The One-Dimensional Dirac Delta Function}}
+% QUESTION 44
+\qs{1.44}{Evaluate the following integrals:
+\begin{enumerate}[label=(\alph*)]
+	\item \( \int^{6}_{2} \!\left( 3x^{2} - 2x - 1 \right)\delta \!\left( x - 3 \right) \, dx \)
+	\item \( \int^{5}_{0} \cos\!\left(x\right)\delta \!\left( x - \pi \right) \, dx \)
+	\item \( \int^{3}_{0} x^{3}\delta \!\left( x + 1 \right) \, dx \)
+	\item \( \int^{\infty}_{-\infty} \ln\!\left(x + 3\right)\delta \!\left( x + 2 \right) \, dx \)
+\end{enumerate}}
+
+\begin{enumerate}[label=(\alph*)]
+	\item \( 20 \)
+	\item \( -1 \)
+	\item \( 0 \)
+	\item \( 0 \)
+\end{enumerate}
+
+% QUESTION 45
+\qs{1.45}{Evaluate the following integrals:
+\begin{enumerate}[label=(\alph*)]
+	\item \( \int^{2}_{-2} \!\left( 2x + 3 \right)\delta \!\left( 3x \right) \, dx \)
+	\item \( \int^{2}_{0} \!\left( x^{3} + 3x + 2 \right)\delta \!\left( 1 - x \right) \, dx \)
+	\item \( \int^{1}_{-1} 9x^{2}\delta \!\left( 3x + 1 \right) \, dx \)
+	\item \( \int^{a}_{-\infty} \delta \!\left( x - b \right) \, dx \)
+\end{enumerate}}
+
+\begin{enumerate}[label=(\alph*)]
+	\item \( 1 \)
+	\item \( 6 \)
+	\item \( \frac{1}{3} \) (\( \delta \!\left( 3x + 1 \right) = 0 \) at \( x = 1/3 \) and the \( 1/3 \) scaling factor comes out)
+	\item \[
+		\int^{a}_{-\infty} \delta \!\left( x - b \right) \, dx = \begin{cases}
+			1 & b \in (-\infty,a] \\
+			0 & b \not\in (-\infty,a] 
+		\end{cases}  
+	\]
+\end{enumerate}
+
+\newpage
+% QUESTION 46
+\qs{1.46}{\begin{enumerate}[label=(\alph*)]
+	\item Show that
+	\[
+		x \frac{d }{d x}\!\left( \delta \!\left( x \right) \right) = -\delta \!\left( x \right) 
+	\]
+	[\textit{Hint}: Use integration by parts.]
+	\item Let \( \theta \!\left( x \right) \) be the \textbf{step function}:
+	\[
+		\theta \!\left( x \right) \equiv \begin{cases}
+			1 & \text{if } x > 0 \\
+			0 & \text{if } x \le 0 
+		\end{cases} 
+	\]
+	Show that \( d \theta / dx = \delta \!\left( x \right) \).
+\end{enumerate}}
+
+\begin{enumerate}[label=(\alph*)]
+	\item Let \( u = x \) and \( dv = \frac{d }{d x}\!\left( \delta \!\left( x \right) \right) \, dx \). Then \( du = dx \) and \( v = \delta \!\left( x \right) \), which implies
+	\[
+		\int^{\infty}_{-\infty} x \frac{d }{d x}\!\left( \delta \!\left( x \right) \right) \, dx = \underbrace{x \delta \!\left( x \right) \Big|^{\infty}_{-\infty}}_{= 0} - \int^{\infty}_{-\infty} \delta \!\left( x \right) \, dx = -\int^{\infty}_{-\infty} \delta \!\left( x \right) \, dx
+	\]
+	Equating the integrands produces the desired result.
+	\item The intuition here is to proceed with integration by parts. Consider the function \( f \!\left( x \right) \). Compute, with \( u = f \!\left( x \right) \) and \( dv = \!\left( d \theta / dx \right)dx \):
+	\begin{align*}
+		\int^{\infty}_{-\infty} f \!\left( x \right)\frac{d \theta}{d x} \, dx & = f \!\left( x \right)\theta \!\left( x \right) \Big|^{\infty}_{-\infty} - \int^{\infty}_{-\infty} \theta \!\left( x \right) \frac{d f}{d x} \, dx \\
+		 & = f \!\left( \infty \right) - \int^{\infty}_{0} \frac{d f}{d x} \, dx \\
+		 & = f \!\left( 0 \right)
+	\end{align*}
+	where the second equality arises from the definition of \( \theta \!\left( x \right) \), and the third from the Fundamental Theorem of Calculus. Now, the equality is satisfied if and only if 
+	\[
+		\frac{d \theta}{d x} = \delta \!\left( x \right)
+	\]
+\end{enumerate}
+
+\newpage
+\subsubsection{\textsf{1.5.3 - The Three-Dimensional Delta Function}}
+% QUESTION 47
+\qs{1.47}{\begin{enumerate}[label=(\alph*)]
+	\item Write an expression for the volume charge density \( \rho \!\left( \pmb{r} \right) \) of a point charge \( q \) at \( \pmb{r}' \). Make sure that the volume integral of \( \rho \) equals \( q \).
+	\item What is the volume charge density of an electric dipole, consisting of a point charge \( -q \) at the origin and a point charge \( +q \) at \( \pmb{a} \)?
+	\item What is the volume charge density (in spherical coordinates) of a uniform, infinitesimally thin spherical shell of radius \( R \) and total charge \( Q \), centered at the origin? [\textit{Beware}: the integral over all space must equal \( Q \).]
+\end{enumerate}}
+
+\begin{enumerate}[label=(\alph*)]
+	\item One approach is to take inspiration from the vector function
+	\[
+		\pmb{v} = \frac{1}{r^{2}}\pmb{\hat{r}}
+	\]
+	and replacing \( \pmb{\hat{r}} \) or \( r \) with \( \hrcurs \) or \( \rcurs \), multiplying by \( q / 4 \pi \), and taking the divergence, concluding
+	\[
+		\rho \!\left( \brcurs \right) = \nabla \cdot \frac{q}{4 \pi \rcurs^{2}}\hrcurs = q \delta^{3}\!\left( \brcurs \right)
+	\]
+	then we can see that 
+	\[
+		\int_{\mathcal{V}} \nabla \cdot \frac{q}{4 \pi \rcurs^{2}}\hrcurs \, d \tau = \int_{\mathcal{V}}q \delta^{3}\!\left( \brcurs \right) \, d \tau = q
+	\]
+	\item By superposition,
+	\[
+		\rho \!\left( \pmb{r} \right) = \nabla \cdot \frac{q}{4 \pi \abs{\pmb{r} - \pmb{a}}^{3}}\!\left( \pmb{r} - \pmb{a} \right) - \nabla \cdot \frac{q}{4 \pi r^{2}}\pmb{\hat{r}} = q \!\left[ \delta^{3}\!\left( \pmb{r} - \pmb{a} \right) - \delta^{3}\!\left( \pmb{r} \right) \right]
+	\]
+	where the cubed term in the denominator of the first term is necessary to normalize the accompanying vector.
+	\item The charge, as opposed to being concentrated at a point, is distributed across the shell. One approach is to work backwards from the constraint
+	\[
+		\int_{\mathcal{V}}\rho \!\left( r,\theta,\phi \right) \, d \tau = \int^{2 \pi}_{0} \int^{\pi}_{0} \int^{\infty}_{0} \rho \!\left( r,\theta,\phi \right)r^{2}\sin\!\left(\theta\right) \, dr \, d \theta \, d \phi = Q  
+	\]
+	If we require \( \rho \!\left( r,\theta,\phi \right) = \rho \!\left( r \right) \) (strictly a function of \( r \)) and simplify the volume integral slightly, we have
+	\[
+		\int^{\infty}_{0} 4 \pi \rho \!\left( r \right)r^{2} \, dr = Q  
+	\]
+	which is solved by
+	\[
+		\rho \!\left( r \right) = \frac{Q}{4 \pi R^{2}}\delta \!\left( r - R \right) 
+	\]
+\end{enumerate}
+
+% QUESTION 48
+\qs{1.48}{Evaluate the following integrals:
+\begin{enumerate}[label=(\alph*)]
+	\item \( \int \!\left( r^{2} + \pmb{r} \cdot \pmb{a} + a^{2} \right)\delta^{3}\!\left( \pmb{r} - \pmb{a} \right) \, d \tau \), where \( \pmb{a} \) is a fixed vector, \( a \) is its magnitude, and the integral is over all space.
+	\item \( \int_{\mathcal{V}}\abs{\pmb{r} - \pmb{b}}^{2}\delta^{3}\!\left( 5 \pmb{r} \right) \, d \tau \), where \( \mathcal{V} \) is a cube of side 2, centered on the origin, and \( \pmb{b} = 4 \pmb{\hat{y}} + 3 \pmb{\hat{z}} \).
+	\item \( \int_{\mathcal{V}}\!\left[ r^{4} + r^{2}\!\left( \pmb{r} \cdot \pmb{c} \right) + c^{4} \right]\delta^{3}\!\left( \pmb{r} - \pmb{c} \right) \, d \tau \), where \( \mathcal{V} \) is a sphere of radius 6 about the origin, \( \pmb{c} = 5 \pmb{\hat{x}} + 3 \pmb{\hat{y}} + 2 \pmb{\hat{z}} \), and \( c \) is its magnitude.
+	\item \( \int_{\mathcal{V}}\pmb{r} \cdot \!\left( \pmb{d} - \pmb{r} \right)\delta^{3}\!\left( \pmb{e} - \pmb{r} \right) \, d \tau \), where \( \pmb{d} = \!\left( 1,2,3 \right) \), \( \pmb{e} = \!\left( 3,2,1 \right) \), and \( \mathcal{V} \) is a sphere of radius 1.5 centered at \( \!\left( 2,2,2 \right) \).
+\end{enumerate}}
+
+\begin{enumerate}[label=(\alph*)]
+	\item \( 3a^{2} \)
+	\item \( 1 / 5 \), using the scaling factor 
+	\[
+		\delta^{3}\!\left( k \pmb{r} \right) = \frac{1}{\abs{k}^{3}}\delta^{3}\!\left( \pmb{r} \right) 
+	\]
+	\item Since \( \abs{\pmb{c}} = \sqrt{38} > 6 \), the spike falls outside of the sphere, and the volume integral vanishes.
+	\item Since \( \abs{\pmb{o} - \pmb{e}} = \sqrt{2} < 1.5 \) (where \( \pmb{o} \) is the center of the sphere), \( \pmb{e} \) falls within the volume defined by \( \mathcal{V} \), and the volume integral evaluates to
+	\[
+		\pmb{e} \cdot \!\left( \pmb{d} - \pmb{e} \right) = 3 \!\left( -2 \right) + 2 \!\left( 0 \right) + 1 \!\left( 2 \right) = -4
+	\]
+\end{enumerate}
+
+% QUESTION 49
+\qs{1.49}{Evalute the integral
+\[
+	J = \int_{\mathcal{V}}e^{-r}\!\left( \nabla \cdot \frac{\pmb{\hat{r}}}{r^{2}} \right) \, d \tau  
+\]
+(where \( \mathcal{V} \) is a sphere of radius \( R \), centered at the origin) by two different methods, as in Ex. 1.16.}
+
+Method 1:
+\[
+	J = \int_{\mathcal{V}}e^{-r}\!\left( \nabla \cdot \frac{\pmb{\hat{r}}}{r^{2}} \right) \, d \tau = \int_{\mathcal{V}}e^{-r}4 \pi \delta^{3}\!\left( \pmb{r} \right) \, d \tau = 4 \pi 
+\]
+Method 2:
+\[
+	J = \int_{\mathcal{V}}e^{-r}\!\left( \nabla \cdot \frac{\pmb{\hat{r}}}{r^{2}} \right) \, d \tau = -\int_{\mathcal{V}}\frac{\pmb{\hat{r}}}{r^{2}} \cdot \!\left( \nabla e^{-r} \right) \, d \tau + \oint_{\mathcal{S}}e^{-r} \frac{\pmb{\hat{r}}}{r^{2}} \cdot d \pmb{a}
+\]
+First, evaluate the volume integral:
+\begin{align*}
+	-\int_{\mathcal{V}}\frac{\pmb{\hat{r}}}{r^{2}} \cdot \!\left( \nabla e^{-r} \right) \, d \tau & = \int^{2 \pi}_{0} \int^{\pi}_{0} \int^{R}_{0} e^{-r}\sin\!\left(\theta\right) \, dr \, d \theta \, d \phi \\
+												      & = 4 \pi\!\left( 1 - e^{-R} \right)
+\end{align*}
+And then the surface integral:
+\[
+	\oint_{\mathcal{S}}e^{-r} \frac{\pmb{\hat{r}}}{r^{2}} \cdot d \pmb{a} = \int^{2 \pi}_{0} \int^{\pi}_{0} e^{-R}\sin\!\left(\theta\right) \, d \theta \, d \phi = 4 \pi e^{-R}
+\]
+Summing produces \( 4 \pi \).
+
+\newpage
+\subsection{\textsf{1.6 - The Theory of Vector Fields}}
+\subsubsection{\textsf{1.6.2 - Potentials}}
+% QUESTION 50
+\qs{1.50}{\begin{enumerate}[label=(\alph*)]
+	\item Let \( \pmb{F}_{1} = x^{2}\pmb{\hat{z}} \) and \( \pmb{F}_{2} = x \pmb{\hat{x}} + y \pmb{\hat{y}} + z \pmb{\hat{z}} \). Calculate the divergence and curl of \( \pmb{F}_{1} \) and \( \pmb{F}_{2} \). Which one can be written as the gradient of a scalar? Find a scalar potential that does the job. Which one can be written as the curl of a vector? Find a suitable vector potential.
+	\item Show that \( \pmb{F}_{3} = yz \pmb{\hat{x}} + zx \pmb{\hat{y}} + xy \pmb{\hat{z}} \) can be written as both the gradient of a scalar and as the curl of a vector. Find scalar and vector potentials for this function.
+\end{enumerate}}
+
+\begin{enumerate}[label=(\alph*)]
+	\item \begin{align*}
+		\nabla \cdot \pmb{F}_{1} & = \frac{\partial }{\partial z}\!\left( x^{2} \right) = 0 \\
+		\nabla \times \pmb{F}_{1} & = \begin{vmatrix}
+			\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\
+			\frac{\partial }{\partial x} & \frac{\partial }{\partial y} & \frac{\partial }{\partial z} \\
+			0 & 0 & x^{2}
+		\end{vmatrix} \\
+					  & = -2x \pmb{\hat{y}} \\
+		\nabla \cdot \pmb{F}_{2} & = \frac{\partial }{\partial x}\!\left( x \right) + \frac{\partial }{\partial y}\!\left( y \right) + \frac{\partial }{\partial z}\!\left( z \right) = 3 \\
+		\nabla \times \pmb{F}_{2} & = \begin{vmatrix}
+			\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\
+			\frac{\partial }{\partial x} & \frac{\partial }{\partial y} & \frac{\partial }{\partial z} \\
+			x & y & z
+		\end{vmatrix} \\ 
+					  & = \pmb{0}
+	\end{align*}
+	\( \pmb{F}_{2} \) can be written as the gradient of a scalar and \( \pmb{F}_{1} \) the curl of a vector. One scalar potential for \( \pmb{F}_{2} \) is
+	\[
+		V = -\frac{1}{2}\!\left( x^{2} + y^{2} + z^{2} \right) 
+	\]
+	which produces 
+	\[
+		\pmb{F}_{2} = -\nabla V 
+	\]
+	and a vector potential for \( \pmb{F}_{1} \):
+	\[
+		\pmb{A} = \frac{x^{3}}{3}\pmb{\hat{z}} 
+	\]
+	which produces
+	\[
+		\pmb{F}_{1} = \nabla \times \pmb{A} 
+	\]
+	\item \begin{align*}
+		\nabla \cdot \pmb{F}_{3} & = \frac{\partial }{\partial x}\!\left( yz \right) + \frac{\partial }{\partial y}\!\left( zx \right) + \frac{\partial }{\partial z}\!\left( xy \right) = 0 \\
+		\nabla \times \pmb{F}_{3} & = \begin{vmatrix}
+			\pmb{\hat{x}} & \pmb{\hat{y}} & \pmb{\hat{z}} \\
+			\frac{\partial }{\partial x} & \frac{\partial }{\partial y} & \frac{\partial }{\partial z} \\
+			yz & zx & xy
+		\end{vmatrix} \\ 
+					  & = \pmb{0}
+	\end{align*}
+	Scalar potential:
+	\[
+		V = -xyz  
+	\]
+	Vector potential:
+	The vector potential \( \pmb{A} \) must satisfy these properties:
+	\begin{align*}
+		\frac{\partial A_{z}}{\partial y} - \frac{\partial A_{y}}{\partial z} & = yz \\
+		\frac{\partial A_{x}}{\partial z} - \frac{\partial A_{z}}{\partial x} & = zx \\ 
+		\frac{\partial A_{y}}{\partial x} - \frac{\partial A_{x}}{\partial y} & = xy
+	\end{align*}
+	To generate \( \pmb{A} \), for the sake of simplicity, set \( A_{z} = 0 \). Then one proposal satisfying the first two equations is
+	\[
+		A_{x} = \frac{xz^{2}}{2}, \qquad A_{y} = -\frac{yz^{2}}{2} 
+	\]
+	The last equation, however, is unsatisfied. To correct our solution, we can add a \( -xy^{2} / 2 \) term to \( A_{x} \), which is not a function of \( z \) so the second equation remains satisfied. Now all three equations are satisfied, and we have
+	\[
+		\pmb{A} = \frac{x}{2}\!\left( z^{2} - y^{2} \right)\pmb{\hat{x}} - \frac{1}{2
+}yz^{2}\pmb{\hat{y}}
+	\]
+\end{enumerate}
+
+% QUESTION 51
+\qs{1.51}{For Theorem 1, show that (d) \( \implies \) (a), (a) \( \implies \) (c), (c) \( \implies \) (b), (b) \( \implies \) (c), and (c) \( \implies \) (a).}
+
+\begin{proof}[Proof]
+(d) \( \implies \) (a): \( \nabla \times \pmb{F} = \nabla \times \!\left( -\nabla V \right) = \pmb{0} \) since the curl of a gradient always vanishes.
+
+(a) \( \implies \) (c): By Stokes' theorem,
+\[
+	\int_{\mathcal{S}}\!\left( \nabla \times \pmb{F} \right) \cdot d \pmb{a} = \oint_{\mathcal{P}}\pmb{F}\cdot d \pmb{l} = 0 
+\]
+if \( \nabla \times \pmb{F} = \pmb{0} \).
+
+(c) \( \implies \) (b): Take any two arbitrary points; call them \( \pmb{a} \) and \( \pmb{b} \). Consider two paths between them: \( \mathcal{P}_{1} \) and \( \mathcal{P}_{2} \). Grafting the ends together, they form a closed loop:
+\[
+	\oint = \int_{\mathcal{P}_{1}} - \int_{\mathcal{P}_{2}} = 0
+\]
+where the negative sign arises from the need to keep consistent our direction of movement along the loop. By assumption, the difference is zero, thus
+\[
+	\int_{\mathcal{P}_{1}} = \int_{\mathcal{P}_{2}} 
+\]
+which is akin to saying \( \displaystyle{\int^{\pmb{b}}_{\pmb{a}} \pmb{F} \cdot d \pmb{l} } \) is independent of path.
+
+(b) \( \implies \) (c): Let \( \pmb{a} = \pmb{b} \). Then by path independence, we can take the difference of the integral at equal endpoints, and see that the closed loop integral vanishes.
+\[
+	\int^{\pmb{a}}_{\pmb{a}} \pmb{F} \cdot d \pmb{l} = \oint_{P} \pmb{F} \cdot d \pmb{l} = 0   
+\]
+(c) \( \implies \) (a): By Stokes' theorem,
+\[
+	\oint \pmb{F} \cdot d \pmb{l} = \int \!\left( \nabla \times \pmb{F} \right) \cdot d \pmb{a} = 0 
+\]
+Physically, the surface integral measures the flux of the curl through the surface. If there is no flux given that we have zero for any arbitrary loop, then it must follow that there is no curl:
+\[
+	\nabla \times \pmb{F} = \pmb{0} 
+\]
+\end{proof}
+
+% QUESTION 1.52
+\qs{1.52}{For Theorem 2, show that (d) \( \implies \) (a), (a) \( \implies \) (c), (c) \( \implies \) (b), (b) \( \implies \) (c), and (c) \( \implies \) (a).}
+
+\begin{proof}[Proof]
+(d) \( \implies \) (a): \( \nabla \cdot \pmb{F} = \nabla \cdot \!\left( \nabla \times \pmb{A} \right) = 0 \) as the divergence of a curl is always zero.
+
+(a) \( \implies \) (c): By the divergence theorem,
+\[
+	\int_{\mathcal{V}}\!\left( \nabla \cdot \pmb{F} \right) \cdot d \tau = \oint_{\mathcal{S}} \pmb{F} \cdot d \pmb{a} = 0
+\]
+
+(c) \( \implies \) (b): This is the three-dimensional analogue to Theorem 1. Consider any perimeter around \( \mathcal{S} \). Slice through it to expose an opening in two surfaces \( \mathcal{S}_{1} \) and \( \mathcal{S}_{2} \). Then we can write
+\[
+	\oint_{\mathcal{S}} = \int_{\mathcal{S}_{1}} - \int_{\mathcal{S}_{2}} = 0 \quad \implies \quad \int_{\mathcal{S}_{1}} = \int_{\mathcal{S}_{2}}
+\]
+Establishing independence of \( \int \pmb{F} \cdot d \pmb{a} \) of surface.
+
+(b) \( \implies \) (c): Let \( \mathcal{S}_{1} \) and \( \mathcal{S}_{2} \) be two open surfaces that share the same boundary. Melding them at the boundary produces a closed surface. Summing the fluxes from each produces
+\[
+	\int_{\mathcal{S}_{1}} - \int_{\mathcal{S}_{2}} = \oint_{\mathcal{S}} = 0 
+\]
+where the zero equality emerges from the independence of surface.
+
+(c) \( \implies \) (a): By the divergence theorem,
+\[
+	\oint \pmb{F} \cdot d \pmb{a} = \int_{\mathcal{V}} \!\left( \nabla \cdot \pmb{F} \right) d \tau = 0 
+\]
+Since the volume integral of the divergence is zero for any arbitrary surface, it must be that \( \nabla \cdot \pmb{F} = 0 \).
+\end{proof}
+
+% QUESTION 53
+\qs{1.53}{\begin{enumerate}[label=(\alph*)]
+	\item Which of the vectors in Problem 1.15 can be expressed as the gradient of a scalar? Find a scalar function that does the job.
+	\item Which can be expressed as the curl of a vector? Find such a vector.
+\end{enumerate}}
+
+\begin{enumerate}[label=(\alph*)]
+	\item \( \nabla \times \pmb{v}_{c} = \pmb{0} \), \( \pmb{v}_{c} = -\nabla V \) where \( V = -xy^{2} - yz^{2} \)
+	\item \( \nabla \cdot \pmb{v}_{a} = 0 \), \( \pmb{v}_{a} = \nabla \times \pmb{A} \) where \( \pmb{A} = xz^{3}\pmb{\hat{x}} - x^{2}z \pmb{\hat{y}} \)
+\end{enumerate}
+
+\newpage
+\subsection{\textsf{More Problems on Chapter 1}}
+% QUESTION 1.54
+\qs{1.54}{Check the divergence theorem for the function
+\[
+	\pmb{v} = r^{2}\cos\!\left(\theta\right)\pmb{\hat{r}} + r^{2}\cos\!\left(\phi\right)\pmb{\hat{\theta}} - r^{2}\cos\!\left(\theta\right)\sin\!\left(\phi\right)\pmb{\hat{\phi}} 
+\]
+using as your volume one octant of the sphere of radius \( R \) (Fig. 1.48). Make sure you include the \textit{entire} surface.}
+
+First calculating the divergence:
+\begin{align*}
+	\nabla \cdot \pmb{v} & = \frac{1}{r^{2}}\frac{\partial }{\partial r}\!\left[ r^{4}\cos\!\left(\theta\right) \right] + \frac{1}{r \sin\!\left(\theta\right)}\frac{\partial }{\partial \theta}\!\left[ r^{2}\sin\!\left(\theta\right)\cos\!\left(\phi\right) \right] + \frac{1}{r \sin\!\left(\theta\right)}\frac{\partial }{\partial \phi}\!\left[ -r^{2}\cos\!\left(\theta\right)\sin\!\left(\phi\right) \right] \\
+			     & = 4r \cos\!\left(\theta\right) + r \cot\!\left(\theta\right)\cos\!\left(\phi\right) - r \cot\!\left(\theta\right)\cos\!\left(\phi\right) \\
+			     & = 4r \cos\!\left(\theta\right)
+\end{align*}
+The volume integral is
+\begin{align*}
+	\int_{\mathcal{V}}4r \cos\!\left(\theta\right) \, d \tau & = \int^{\pi / 2}_{0} \int^{\pi / 2}_{0} \int^{R}_{0} 4r^{3}\sin\!\left(\theta\right)\cos\!\left(\theta\right) \, dr \, d \theta \, d \phi \\
+								 & = \frac{\pi R^{4}}{4}
+\end{align*}
+And the surface integral
+\begin{align*}
+	\oint_{\mathcal{S}}\pmb{v} \cdot d \pmb{a} & = \underbrace{\int^{\pi / 2}_{0} \int^{\pi / 2}_{0} R^{4}\sin\!\left(\theta\right)\cos\!\left(\theta\right) \, d \theta \, d \phi}_{\text{curved surface}} + \underbrace{\int^{\pi / 2}_{0} \int^{R}_{0} r^{3}\cos\!\left(\phi\right) \, dr \, d \phi}_{xy \text{ surface}} \\
+	& \qquad -\underbrace{\int^{\pi / 2}_{0} \int^{R}_{0} r^{3}\cos\!\left(\theta\right)\sin\!\left(0\right) \, d \theta \, dr}_{xz \text{ surface, } \phi = 0} -\underbrace{\int^{\pi / 2}_{0} \int^{R}_{0} r^{3}\cos\!\left(\theta\right)\sin\!\left(\frac{\pi}{2}\right) \, dr \, d \theta}_{yz \text{ surface, } \phi = \pi / 2} \\
+	& = \frac{\pi R^{4}}{4} + \frac{R^{4}}{4} - 0 - \frac{R^{4}}{4} \\
+	& = \frac{\pi R^{4}}{4}
+\end{align*}
+
+% QUESTION 55
+\qs{1.55}{Check Stokes' theorem using the function \( \pmb{v} = ay \pmb{\hat{x}} + bx \pmb{\hat{y}} \) (\( a \) and \( b \) are constants) and the circular path of radius \( R \), centered at the origin in the \( xy \) plane.}
+
+First convert to cylindrical coordinates:
+\begin{align*}
+	\pmb{v} & = s \!\left( a \sin\!\left(\phi\right)\!\left[ \cos\!\left(\phi\right)\pmb{\hat{s}} - \sin\!\left(\phi\right)\pmb{\hat{\phi}} \right] + b \cos\!\left(\phi\right)\!\left[ \sin\!\left(\phi\right)\pmb{\hat{s}} + \cos\!\left(\phi\right)\pmb{\hat{\phi}} \right] \right) \\
+		& = s \sin\!\left(\phi\right)\cos\!\left(\phi\right)\!\left( a + b \right)\pmb{\hat{s}} + s \!\left[ b \cos^{2}\!\left(\phi\right) - a \sin^{2}\!\left(\phi\right) \right]\pmb{\hat{\phi}} \\
+		& = \frac{s \!\left( a + b \right)}{2}\sin\!\left(2 \phi\right)\pmb{\hat{s}} + s \!\left[ \!\left( \frac{b - a}{2} \right) + \!\left( \frac{a + b}{2} \right)\cos\!\left(2 \phi\right) \right]\pmb{\hat{\phi}}
+\end{align*}
+And calculate the curl:
+\begin{align*}
+	\nabla \times \pmb{v} & = \frac{1}{s}\!\left[ \frac{\partial }{\partial s}\!\left( s^{2}\!\left[ \!\left( \frac{b - a}{2} \right) + \!\left( \frac{a + b}{2} \right)\cos\!\left(2 \phi\right) \right] \right) - \frac{\partial }{\partial \phi}\!\left( \frac{s \!\left( a + b \right)}{2}\sin\!\left(2 \phi\right) \right) \right]\pmb{\hat{z}} \\
+			      & = \!\left[ \!\left( b - a \right) + \!\left( a +  b \right)\cos\!\left(2 \phi\right) - \!\left( a + b \right)\cos\!\left(2 \phi\right) \right]\pmb{\hat{z}} \\
+			      & = \!\left( b - a \right)\pmb{\hat{z}}
+\end{align*}
+In calculating the surface integral, no surface is specified in the problem. Therefore, since from Stokes' theorem the surface integral is dependent only on the boundary line, we can pick the simplest surface: the circular surface with radius \( R \) on the \( xy \) plane. Compute
+\[
+	\int_{\mathcal{S}} \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = \int^{2 \pi}_{0} \int^{R}_{0} \!\left( b - a \right)s \, ds \, d \phi = \!\left( b - a \right)\pi R^{2}
+\]
+Now, the line integral
+\begin{align*}
+	\oint_{\mathcal{P}} \pmb{v} \cdot d \pmb{l} & = \int^{R}_{0} \frac{s \!\left( a + b \right)}{2}\sin\!\left(4 \pi\right) \, ds + \int^{2 \pi}_{0} R^{2}\!\left[ \!\left( \frac{b - a}{2} \right) + \!\left( \frac{a + b}{2} \right)\cos\!\left(2 \phi\right) \right] \, d \phi \\
+	 & = \!\left( b - a \right)\pi R^{2}
+\end{align*}
+
+% QUESTION 56
+\qs{1.56}{Compute the line integral of
+\[
+	\pmb{v} = 6 \pmb{\hat{x}} + yz^{2} \pmb{\hat{y}} + \!\left( 3y + z \right)\pmb{\hat{z}} 
+\]
+along the triangular path shown in Fig. 1.49. Check your answer using Stokes' theorem.}
+
+\underline{\( \!\left( 0,0,0 \right) \rightarrow \!\left( 0,1,0 \right) \):} \( x = z = 0 \), \( d \pmb{l} = dy \pmb{\hat{y}} \), \( \pmb{v} \cdot d \pmb{l} = 0 \)
+\[
+	\int_{\mathcal{P}_{1}} \pmb{v} \cdot d \pmb{l} = 0 
+\]
+\underline{\( \!\left( 0,1,0 \right) \rightarrow \!\left( 0,0,2 \right) \):} 
+\begin{align*}
+	x & = 0 \\
+	z & = -2y + 2 \\ 
+	d \pmb{l} & = dy \pmb{\hat{y}} + dz \pmb{\hat{z}} = dy \!\left( \pmb{\hat{y}} - 2 \pmb{\hat{z}} \right) \\
+	\pmb{v} \cdot d \pmb{l} & = \!\left( yz^{2} - 6y - 2z \right) \, dy \\
+				& = \!\left( 4y^{3} - 8y^{2} + 2y - 4 \right) \, dy
+\end{align*}
+\[
+	\int_{\mathcal{P}_{2}} \pmb{v} \cdot d \pmb{l} = \int^{0}_{1} \!\left( 4y^{3} - 8y^{2} + 2y - 4 \right) \, dy = - 1 + \frac{8}{3} - 1 + 4 = \frac{14}{3}  
+\]
+\underline{\( \!\left( 0,0,2 \right) \rightarrow \!\left( 0,0,0 \right) \):} \( x = y = 0 \), \( d \pmb{l} = dz \pmb{\hat{z}} \)
+\[
+	\int_{\mathcal{P}_{3}} \pmb{v} \cdot d \pmb{l} = \int^{0}_{2} z \, dz = -2 
+\]
+Summing produces
+\[
+	\oint_{\mathcal{P}} \pmb{v} \cdot d \pmb{l} = \frac{8}{3}
+\]
+Using Stokes' theorem, consider the triangular surface spanned in Figure 1.49. We have infinitesimal area \( d \pmb{a} = dz \, dy \, \pmb{\hat{x}} \) with bounds \( z \in \!\left[ 0, -2y + 2 \right] \) and \( y \in \!\left[ 0,1 \right] \). The curl is
+\[
+	\nabla \times \pmb{v} = \!\left( 3 - 2yz \right)\pmb{\hat{x}}
+\]
+Compute
+\[
+	\int^{1}_{0} \int^{-2y + 2}_{0} \!\left( 3 - 2yz \right) \, dz \, dy = \int^{0}_{1} \!\left( -4y^{3} + 8y^{2} - 10y + 6 \right) \, dy = -1 + \frac{8}{3} - 5 + 6 = \frac{8}{3}
+\]
+
+% QUESTION 57
+\qs{1.57}{Compute the line integral of
+\[
+	\pmb{v} = r \cos^{2}\!\left(\theta\right)\pmb{\hat{r}} - r \cos\!\left(\theta\right)\sin\!\left(\theta\right)\pmb{\hat{\theta}} + 3r \pmb{\hat{\phi}} 
+\]
+around the path shown in Fig. 1.50 (the points are labeled by their Cartesian coordinates). Do it either in cylindrical or in spherical coordinates. Check your answer, using Stokes' theorem.}
+
+There is a great deal of tedium in evaluating each segment separately. One slick approach is to observe that in cylindrical coordinates, we have (evaluated a few lines below)
+\[
+	\pmb{v} = z \pmb{\hat{z}} + 3 \sqrt{s^{2} + z^{2}} \, \pmb{\hat{\phi}}
+\]
+By the fundamental theorem of gradients, we can observe that the \( \pmb{\hat{z}} \) component is in fact expressable as a gradient, implying that the path contribution from that component must be zero all around the loop:
+\[
+	z \pmb{\hat{z}} = \nabla \!\left( \frac{z^{2}}{2} \right) 
+\]
+We will see this hold true in the tedium of evaluating the line integral for each component. In general, the infinitesimal displacement in spherical coordinates is
+\[
+	d \pmb{l} = dr \, \pmb{\hat{r}} + r \, d \theta \, \pmb{\hat{\theta}} + r \sin\!\left(\theta\right) \, d \phi \, \pmb{\hat{\phi}}
+\]
+and in cylindrical
+\[
+	d \pmb{l} = ds \, \pmb{\hat{s}} + s \, d \phi \, \pmb{\hat{\phi}} + dz \, \pmb{\hat{z}} 
+\]
+Furthermore, \( \pmb{v} \) in cylindrical coordinates is
+\begin{align*}
+	\pmb{v} & = r \cos\!\left(\theta\right)\!\left[ \cos\!\left(\theta\right)\pmb{\hat{r}} - \sin\!\left(\theta\right)\pmb{\hat{\theta}} \right] + 3r \pmb{\hat{\phi}} \\
+	 & = r \cos\!\left(\theta\right)\pmb{\hat{z}} + 3r \pmb{\hat{\phi}} \\
+	 & = z \pmb{\hat{z}} + 3 \sqrt{s^{2} + z^{2}} \, \pmb{\hat{\phi}}
+\end{align*}
+The strategy is to identify which basis is ideal for each segment: spherical or cylindrical. Starting at the origin, calculate each segment's contribution:
+
+\underline{\textbf{Spherical: }\( \!\left( 0,0,0 \right) \rightarrow \!\left( 1,0,0 \right) \):} \( \theta = \pi / 2 \), \( \phi = 0 \), \( d \pmb{l} = dr \, \pmb{\hat{r}} \), \( \pmb{v} \cdot d \pmb{l} = r \cos^{2}\!\left(\pi / 2\right) \, dr = 0 \)
+\[
+	\int_{\mathcal{P}_{1}} \pmb{v} \cdot d \pmb{l} = 0 
+\]
+\underline{\textbf{Spherical: }\( \!\left( 1,0,0 \right) \rightarrow \!\left( 0,1,0 \right) \):} \( \theta = \pi / 2 \), \( r = 1 \), \( d \pmb{l} = r \sin\!\left(\pi / 2\right) \, d \phi \, \pmb{\hat{\phi}} = d \phi \, \pmb{\hat{\phi}}\), \( \pmb{v} \cdot d \pmb{l} = 3 \, d \phi \)
+\[
+	\int_{\mathcal{P}_{2}} \pmb{v} \cdot d \pmb{l} = \int^{\pi / 2}_{0} 3 \, d \phi = \frac{3 \pi}{2} 
+\]
+\underline{\textbf{Cylindrical: }\( \!\left( 0,1,0 \right) \rightarrow \!\left( 0,1,2 \right) \):} \( s = 1 \), \( \phi = \pi / 2 \), \( d \pmb{l} = dz \, \pmb{\hat{z}} \), \( \pmb{v} \cdot d \pmb{l} = z \, dz \)
+\[
+	\int_{\mathcal{P}_{3}}\pmb{v} \cdot d \pmb{l} = \int^{2}_{0} z \, dz = 2
+\]
+\underline{\textbf{Cylindrical: }\( \!\left( 0,1,2 \right) \rightarrow \!\left( 0,0,0 \right) \):} \( z = 2s \), \( \phi = \pi / 2 \), \( d \pmb{l} = ds \, \pmb{\hat{s}} + dz \, \pmb{\hat{z}} = dz \!\left( \frac{1}{2}\pmb{\hat{s}} + \pmb{\hat{z}} \right) \), \( \pmb{v} \cdot d \pmb{l} = z \, dz \)
+\[
+	\int_{\mathcal{P}_{4}} \pmb{v} \cdot d \pmb{l} = \int^{0}_{2} z \, dz = -2 
+\]
+Summing each component produces \( 3 \pi / 2 \). To summarize, the strategy here is to identify the coordinate system for each segment in which calculations are easiest.
+
+The two surfaces are the quarter circle and the triangle. For the quarter circle, 
+\[
+	\nabla \times \pmb{v} = \underbrace{3 \cot\!\left(\theta\right)\pmb{\hat{r}} - 6 \pmb{\hat{\theta}}}_{\text{spherical}} = \underbrace{-\frac{3z}{\sqrt{s^{2} + z^{2}}} \, \pmb{\hat{s}} + \frac{3 \!\left( 2 s^{2} + z^{2} \right)}{s \sqrt{s^{2} + z^{2}}} \, \pmb{\hat{z}}}_{\text{cylindrical}}
+\]
+Now, the quarter circle lies in the plane where \( \theta = \pi / 2 \) (spherical) or \( z = 0 \) (cylindrical), so our curls reduce to
+\[
+	\nabla \times \pmb{v} = \underbrace{- 6 \pmb{\hat{\theta}}}_{\text{spherical}} = \underbrace{6 \, \pmb{\hat{z}}}_{\text{cylindrical}}
+\]
+The infinitesimal areas are \( d \pmb{a} = -r \, dr \, d \phi \, \pmb{\hat{\theta}} \) (spherical) and \( d \pmb{a} = s \, ds \, d \phi \, \pmb{\hat{z}} \) (cylindrical). Note that the negative sign in the spherical infinitesimal area arises from the fact that \( \pmb{\hat{\theta}} \) always points downwards; at \( \theta = \pi / 2 \) it is antiparallel to \( \pmb{\hat{z}} \). Calculating the surface integral contribution from the quarter circle produces
+\[
+	 \int \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = -\int^{\pi / 2}_{0} \int^{1}_{0} \!\left( -1 \right)6r \, dr \, d \phi = \int^{\pi / 2}_{0} \int^{1}_{0} 6s \, ds \, d \phi = \frac{3 \pi}{2}
+\]
+In the case of the triangle, the infinitesimal areas point in the \( \pmb{\hat{\phi}} \) (spherical and cylindrical) direction, which are orthogonal to the respective curls. Therefore the triangle contribution is zero, and Stokes' theorem is verified.
+
+\newpage
+
+% QUESTION 58
+\qs{1.58}{Check Stokes' theorem for the function \( \pmb{v} = y \pmb{\hat{z}} \), using the triangular surface shown in Fig. 1.51.}
+
+Begin by calculating the line integral.
+
+\underline{\( \!\left( 0,0,a \right) \rightarrow \!\left( a,0,0 \right) \):} \( y = dy = 0 \), \( z = -x + a \), \( d \pmb{l} = dx \, \pmb{\hat{x}} + dz \, \pmb{\hat{z}} = dx \!\left( \pmb{\hat{x}} - \pmb{\hat{z}} \right) \), \( \pmb{v} \cdot d \pmb{l} = -y \, dx = 0 \)
+\[
+	\int_{\mathcal{P}_{1}} \pmb{v} \cdot d \pmb{l} = 0 
+\]
+\underline{\( \!\left( a,0,0 \right) \rightarrow \!\left( 0,2a,0 \right) \):} \( z = dz = 0 \), \( y = 2 \!\left( a - x \right) \), \( d \pmb{l} = dx \, \pmb{\hat{x}} + dy \, \pmb{\hat{y}} = dx \!\left( \pmb{\hat{x}} - 2 \, \pmb{\hat{y}} \right) \), \( \pmb{v} \cdot d \pmb{l} = 0 \)
+\[
+	\int_{\mathcal{P}_{2}} \pmb{v} \cdot d \pmb{l} = 0 
+\]
+\underline{\( \!\left( 0,2a,0 \right) \rightarrow \!\left( 0,0,a \right) \):} \( x = dx = 0 \), \( y = 2 \!\left( a - z \right) \), \( d \pmb{l} = dy \, \pmb{\hat{y}} + dz \, \pmb{\hat{z}} = dy \!\left( \pmb{\hat{y}} - \frac{1}{2} \, \pmb{\hat{z}} \right) \), \( \pmb{v} \cdot d \pmb{l} = -\frac{1}{2}y \, dy \)
+\[
+	\int_{\mathcal{P}_{3}} \pmb{v} \cdot d \pmb{l} = -\int^{0}_{2a} \frac{y}{2} \, dy = a^{2}
+\]
+The curl is
+\[
+	\nabla \times \pmb{v} = \pmb{\hat{x}} 
+\]
+Projecting the ``shadow'' of the triangular surface onto the \( yz \) plane (the only non-zero component arising from the dot product of \( d \pmb{a} \) with the curl), we have infinitesimal area \( d \pmb{a} = dy \, dz \, \pmb{\hat{x}} \), and we compute
+\[
+	\int \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = \int^{a}_{0} \int^{2 \!\left( a - z \right)}_{0} \, dy \, dz = \int^{a}_{0} 2\!\left( a - z \right) \, dz = 2a^{2} - a^{2} = a^{2}
+\]
+verifying Stokes' theorem.
+
+\vspace{12pt}
+
+% QUESTION 59
+\qs{1.59}{Check the divergence theorem for the function
+\[
+	\pmb{v} = r^{2}\sin\!\left(\theta\right) \pmb{\hat{r}} + 4r^{2}\cos\!\left(\theta\right) \pmb{\hat{\theta}} + r^{2}\tan\!\left(\theta\right) \pmb{\hat{\phi}} 
+\]
+using the volume of the ``ice-cream cone'' shown in Fig. 1.52 (the top surface is spherical, with radius \( R \) and centered at the origin).}
+
+The divergence is given by
+\begin{align*}
+      \nabla \cdot \pmb{v} & = \frac{1}{r^{2}}\frac{\partial }{\partial r}\!\left[ r^{4}\sin\!\left(\theta\right) \right] + \frac{1}{r \sin\!\left(\theta\right)}\frac{\partial }{\partial \theta}\!\left[ 4r^{2}\sin\!\left(\theta\right)\cos\!\left(\theta\right) \right] + \frac{1}{r \sin\!\left(\theta\right)}\frac{\partial }{\partial \phi}\!\left[ r^{2}\tan\!\left(\theta\right) \right] \\
+       & = 4r \sin\!\left(\theta\right) + \frac{4r \!\left[ \cos^{2}\!\left(\theta\right) - \sin^{2}\!\left(\theta\right) \right]}{\sin\!\left(\theta\right)} \\
+       & = \frac{4r \!\left[ \sin^{2}\!\left(\theta\right) + \cos^{2}\!\left(\theta\right) - \sin^{2}\!\left(\theta\right) \right]}{\sin\!\left(\theta\right)} \\
+       & = \frac{4r \cos^{2}\!\left(\theta\right)}{\sin\!\left(\theta\right)} \\
+\end{align*}
+The volume integral is computed as 
+\begin{align*}
+      \int \nabla \cdot \pmb{v} \, d \tau & = \int^{2 \pi}_{0} \int^{\pi / 6}_{0} \int^{R}_{0} 4r^{3}\cos^{2}\!\left(\theta\right) \, dr \, d \theta \, d \phi \\
+       & = 2 \pi R^{4} \int^{\pi / 6}_{0} \cos^{2}\!\left(\theta\right) \, d \theta \\
+       & = 2 \pi R^{4} \!\left[ \frac{\theta}{2} + \frac{\sin\!\left(2 \theta\right)}{4} \right]^{\pi / 6}_{0} \\
+       & = 2 \pi R^{4} \!\left( \frac{\pi}{12} + \frac{\sqrt{3}}{8} \right) \\
+       & = \frac{\pi R^{4}}{12} \!\left( 2 \pi + 3 \sqrt{3} \right)
+\end{align*}
+And the surface integral
+\begin{align*}
+      \int \pmb{v} \cdot d \pmb{a} & = \int^{2 \pi}_{0} \int^{\pi / 6}_{0} R^{4}\sin^{2}\!\left(\theta\right) \, d \theta \, d \phi + \int^{2 \pi}_{0} \int^{R}_{0} 4r^{3}\cos\!\left(\frac{\pi}{6}\right)\sin\!\left(\frac{\pi}{6}\right) \, dr \, d \phi \\
+       & = 2 \pi R^{4} \int^{\pi / 6}_{0} \sin^{2}\!\left(\theta\right) \, d \theta + 2 \sqrt{3} \pi\int^{R}_{0} r^{3} \, dr \\
+       & = 2 \pi R^{4} \!\left[ \frac{\theta}{2} - \frac{\sin\!\left(2 \theta\right)}{4} \right]^{\pi / 6}_{0} + \frac{\sqrt{3} \pi R^{4}}{2} \\
+       & = \frac{\pi R^{4}}{12} \!\left( 2 \pi - 3 \sqrt{3} \right) + \frac{\sqrt{3} \pi R^{4}}{2} \\
+       & = \frac{\pi R^{4}}{12} \!\left( 2 \pi + 3 \sqrt{3} \right)
+\end{align*}
+Confirming the divergence theorem.
+
+\vspace{12pt}
+
+% QUESTION 60
+\qs{1.60}{Here are two cute checks of the fundamental theorems:
+\begin{enumerate}[label=(\alph*)]
+	\item Combine Corollary 2 to the gradient theorem with Stokes' theorem (\( \pmb{v} = \nabla T \), in this case). Show that the result is consistent with what you already knew about second derivatives.
+	\item Combine Corollary 2 to Stokes' theorem with the divergence theorem. Show that the result is consistent with what you already knew.
+\end{enumerate}}
+
+\begin{enumerate}[label=(\alph*)]
+	\item Corollary 2 states that \( \oint \!\left( \nabla T \right) \cdot d \pmb{l} = 0 \). By Stokes' theorem, \( \int \!\left( \nabla \times \nabla T \right) \cdot d \pmb{a} = 0 \), which is consistent with the fact that the curl of a gradient is always zero.
+	\item Corollary 2 states that \( \oint \!\left( \nabla \times \pmb{v} \right) \cdot d \pmb{a} = 0 \). By the divergence theorem, \( \int \!\left( \nabla \cdot \!\left( \nabla \times \pmb{v} \right) \right) \, d \tau = 0 \), which is consistent with the fact that the divergence of a curl is always zero.
+\end{enumerate}
+
 
 \end{document}
